@@ -13,18 +13,6 @@ import java.util.stream.Collectors;
 
 public class Reader {
     
-    public static Object[][] toTableModel() {
-        int i = 0;
-        Object[] aux = readFiles().toArray();
-        Object[] dummy;
-        Object[][] ret = new Object[aux.length][5];
-        for (Object o : aux) {
-            dummy = (Object[]) o;
-            ret[i++] = new Object[]{(String) dummy[0], (String) dummy[1], (String) dummy[2], (String) dummy[3], dummy[4].equals("true")};
-        }
-        return ret;
-    }
-    
     public static Object[][] toTableModel(String str) {
         int i = 0;
         Object[] aux = readFiles(str).toArray();
@@ -36,21 +24,7 @@ public class Reader {
         }
         return ret;
     }
-    
-    private static List<String[]> readFiles() {
-        List<String[]> tb = new ArrayList();
-        listFiles().stream().forEach((File f) -> {
-            try {
-                Files.lines(f.toPath()).forEach((String s) -> {
-                    tb.add(s.split("\t"));
-                });
-            } catch (IOException ex) {
-                Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        return tb;
-    }
-    
+       
     private static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
         listFiles().stream().forEach((File f) -> {

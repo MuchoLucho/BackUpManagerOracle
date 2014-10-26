@@ -9,6 +9,6 @@ package PACKAGES;
  *
  * @author luis
  */
-public class DBConnection {
+public class DBManager {
     
 }

@@ -103,13 +103,13 @@ public class FrontEnd extends javax.swing.JFrame {
 
 
     private void reload_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reload_btnActionPerformed
-        Manager.reload();
+        Manager.filter("\t");
     }//GEN-LAST:event_reload_btnActionPerformed
 
     private void filter_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filter_btnActionPerformed
         if (!filter_txt.getText().isEmpty()) {
             Manager.filter(filter_txt.getText());
-        }else{
+        } else {
             Manager.filter("\t");
         }
     }//GEN-LAST:event_filter_btnActionPerformed

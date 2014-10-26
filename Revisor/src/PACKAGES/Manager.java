@@ -10,18 +10,13 @@ public class Manager {
 
     public static Object[][] table;
 
-    public static Object[][] getTable() {
-        table = Reader.toTableModel();
-        return table;
-    }
-
     public static Object[][] getTable(String str) {
         table = Reader.toTableModel(str);
         return table;
     }
 
     public static DefaultTableModel tm = new DefaultTableModel(
-            Manager.getTable(),
+            Manager.getTable("\t"),
             new String[]{
                 "Strategy", "Database", "Date", "Hour", "Success"
             }
@@ -43,10 +38,6 @@ public class Manager {
             return canEdit[columnIndex];
         }
     };
-
-    public static void reload() {
-        tm.setDataVector(Manager.getTable(), new String[]{"Strategy", "Database", "Date", "Hour", "Success"});
-    }
 
     public static void filter(String str) {
         tm.setDataVector(Manager.getTable(str), new String[]{"Strategy", "Database", "Date", "Hour", "Success"});
