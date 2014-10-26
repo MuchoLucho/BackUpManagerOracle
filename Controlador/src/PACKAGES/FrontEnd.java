@@ -1,6 +1,8 @@
-public class Interfaz extends javax.swing.JFrame {
+package PACKAGES;
 
-    public Interfaz() {
+public class FrontEnd extends javax.swing.JFrame {
+
+    public FrontEnd() {
         initComponents();
     }
 
@@ -128,6 +130,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jTable1.setModel(tabla);
         jScrollPane1.setViewportView(jTable1);
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -170,10 +173,10 @@ public class Interfaz extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrontEnd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         java.awt.EventQueue.invokeLater(() -> {
-            new Interfaz().setVisible(true);
+            new FrontEnd().setVisible(true);
         });
     }
 
