@@ -22,7 +22,7 @@ public class Manager {
             while(!finished){
                 try {
                     System.out.println("-->Thread: checking for new files...");
-                    FolderChecker.listenFolder(listStrat);
+                    FolderChecker.listenFolder();
                     Thread.sleep(5000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);

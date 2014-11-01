@@ -69,9 +69,6 @@ public class FolderChecker {
                  values = Files.lines(f.toPath()).findFirst().get().split("\\t");
                  str = new Strategy(values[0], values[1], values[2]);
             }
-            else{
-                System.err.println("ERROR. FILE DOES NOT CONTAIN A VALID STRATEGY");
-            }
         } catch (IOException ex) {
             Logger.getLogger(FolderChecker.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,10 +81,14 @@ public class FolderChecker {
         try {
              values = Files.lines(f.toPath()).findFirst().get().split("\\t");
              if(values!=null&&values.length==3){
-                 System.err.println("The file has three arguments as expected");
+                 //System.err.println("The file has three arguments as expected");
                  //ADD VALIDATIONS FOR RMAN STRING, VALIDATE IF STRATEGY NAME DOESNT EXIST ALREADY
                  if(SchedulingPattern.validate(values[1])){
-                     System.err.println("CRON String is valid "+values[1]);
+                     //System.err.println("CRON String is valid "+values[1]);
+                     if(StrategyScheduler.existsStrategy(values[0])){
+                         System.err.println("STRATEGY ALREADY EXISTS");
+                         return false;
+                     }
                      Predictor pr = new Predictor(values[1]);
                      System.err.println("Next scheduled date "+pr.nextMatchingDate().toString());
                      return true;
@@ -101,29 +102,28 @@ public class FolderChecker {
         } catch (IOException ex) {
             Logger.getLogger(FolderChecker.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.err.println("INVALID FILE");
+        //System.err.println("INVALID FILE");
         return false;
     }
     
     
-    public static void listenFolder(List<Strategy> stratList){//Checks if there are strategy files in the folder and parses them.
+    public static void listenFolder(){//Checks if there are strategy files in the folder and parses them.
         if(FolderChecker.existFiles()){
             FolderChecker.listFiles().stream().forEach(
                     (file)->{
                         Strategy newstr = FolderChecker.readStrategy(file);
                         if(newstr!=null){
-                            stratList.add(newstr);
-                            boolean fileDeleted = file.delete();
-                            if(fileDeleted)
-                            System.err.println("Strategy file deleted as it was included in the system.");
-                            else  System.err.println("UNABLE TO DELETE THE STRATEGY: CHECK PERMISSIONS");
+                            StrategyScheduler.scheduleStrategy(newstr);
+                            
+                            //Maybe it's better not to delete the files
+                            //boolean fileDeleted = file.delete();
+                            //if(fileDeleted)
+                            //ystem.err.println("Strategy file deleted as it was included in the system.");
+                             System.err.println("A new strategy has been logged");
                         }
-                        else System.err.println("----ERROR PARSING A STRATEGY FILE FROM THE DESIGNATED FOLDER----");
-                    
-                    }
-            
+                    }   
             );
-            System.gc();
+            //System.gc();
         }
     
     }
@@ -134,6 +134,10 @@ public class FolderChecker {
 
     public static void setStratDir(String stratDir) {
         FolderChecker.stratDir = stratDir;
+    }
+
+    public static void deactivateStrategy(Strategy str) {
+        System.err.println("NOT IMPLEMENTED YET. SHOULD WRITE FALSE TO THE END OF FILE");
     }
 
 }
