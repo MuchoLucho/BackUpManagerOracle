@@ -12,9 +12,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Reader {
-    
+
     public static Object[][] toTableModel(String str) {
         int i = 0;
+         i=0;
         Object[] aux = readFiles(str).toArray();
         Object[] dummy;
         Object[][] ret = new Object[aux.length][5];
@@ -44,7 +45,7 @@ public class Reader {
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
-            filesInFolder = Files.walk(Paths.get("./bkup_files"))
+           filesInFolder = Files.walk(Paths.get("./bkup_files"))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
