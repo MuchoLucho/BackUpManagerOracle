@@ -13,7 +13,6 @@ public class Manager implements Serializable {
             });
 
     /*METHODS*/
-
     public static Object[][] getTable(String str) {
         table = ConstructorFiles.toTableModel(str);
         return table;
