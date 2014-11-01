@@ -28,3 +28,4 @@ core
 *.swp
 *.DS_Store
 *.lock
+/nbproject/private/

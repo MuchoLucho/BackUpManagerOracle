@@ -82,6 +82,7 @@ public class FrontEnd extends javax.swing.JFrame {
         jRadioButton2.setText("Incremental BackUp");
 
         modes_group.add(jRadioButton5);
+        jRadioButton5.setSelected(true);
         jRadioButton5.setText("Total BackUp");
 
         jLabel8.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
