@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class FolderChecker {
 
-    private static String stratDir = "C:\\STRATEGIES";
+    private static String stratDir = "C:\\narf_executor\\strategies";
 
     private static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
@@ -119,7 +119,7 @@ public class FolderChecker {
                             //boolean fileDeleted = file.delete();
                             //if(fileDeleted)
                             //ystem.err.println("Strategy file deleted as it was included in the system.");
-                             System.err.println("A new strategy has been logged");
+                             System.err.println("A new strategy has been scheduled");
                         }
                     }   
             );
