@@ -13,7 +13,7 @@ public class Strategy {
 
     private String cronString = "* * * * *";
     private String name = "EC00001";
-    private String rmanString = "rman blablabla";
+    private String rmanString = "rman.rman";
     private String cronID = null;
     private boolean active = true;
 

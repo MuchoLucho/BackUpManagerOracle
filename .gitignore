@@ -16,6 +16,8 @@ build/
 #netbeans specific
 core
 */nbproject/*
+*/build.xml
+*/manifest.mf
  
 #java specific
 *.class
