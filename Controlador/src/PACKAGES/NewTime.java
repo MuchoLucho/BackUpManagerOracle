@@ -2,9 +2,9 @@ package PACKAGES;
 
 import javax.swing.SpinnerNumberModel;
 
-public class newTime extends javax.swing.JPanel {
+public class NewTime extends javax.swing.JPanel {
 
-    public newTime() {
+    public NewTime() {
         initComponents();
         at_lbl.setEnabled(false);
         hour_spn.setEnabled(false);

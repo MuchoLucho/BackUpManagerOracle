@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class LogsGenerator {
 
-    private static String logDirectory = "C:/narf_executor/logs/";
+    private static String logDirectory = "~/narf/executor/logs/";//The last "/" is actually important.
     private static String extension = ".txt";
     public static String generateSampleLog(boolean success, Date date, Strategy str) {
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy_mm_dd_hh_mm_ss");

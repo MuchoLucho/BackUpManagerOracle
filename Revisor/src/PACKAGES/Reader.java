@@ -15,7 +15,7 @@ public class Reader {
 
     public static Object[][] toTableModel(String str) {
         int i = 0;
-         i=0;
+        i = 0;
         Object[] aux = readFiles(str).toArray();
         Object[] dummy;
         Object[][] ret = new Object[aux.length][5];
@@ -25,7 +25,7 @@ public class Reader {
         }
         return ret;
     }
-       
+
     private static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
         listFiles().stream().forEach((File f) -> {
@@ -41,11 +41,11 @@ public class Reader {
         });
         return tb;
     }
-    
+
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
-           filesInFolder = Files.walk(Paths.get("./bkup_files"))
+            filesInFolder = Files.walk(Paths.get(System.getenv("user.home") + "/narf/revisor/logs"))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());

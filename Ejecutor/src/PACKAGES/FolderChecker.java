@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class FolderChecker {
 
-    private static String stratDir = "C:\\narf_executor\\strategies";
+    private static String stratDir = "~/narf/executor/strategies";
 
     private static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();

@@ -1,11 +1,17 @@
 package PACKAGES;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 public class FrontEnd extends javax.swing.JFrame {
 
     public FrontEnd() {
+        this.tbs = new DefaultListModel();
+        DBManager.llenado();
         initComponents();
+        tbs();
         this.setLocationRelativeTo(null);
     }
 
@@ -20,7 +26,7 @@ public class FrontEnd extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        stragedy_txt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -33,12 +39,12 @@ public class FrontEnd extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        tablespaces_lst = new javax.swing.JList();
         jPanel4 = new javax.swing.JPanel();
         jToggleButton1 = new javax.swing.JToggleButton();
         jPanel11 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        databases_cmb = new javax.swing.JComboBox();
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel7 = new javax.swing.JLabel();
@@ -101,7 +107,7 @@ public class FrontEnd extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stragedy_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jRadioButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -119,7 +125,7 @@ public class FrontEnd extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stragedy_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jRadioButton5)
                     .addComponent(jRadioButton1)
                     .addComponent(jRadioButton2))
@@ -150,12 +156,8 @@ public class FrontEnd extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Tablespace");
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        tablespaces_lst.setModel(tbs);
+        jScrollPane1.setViewportView(tablespaces_lst);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -207,6 +209,11 @@ public class FrontEnd extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(0, 0, 0));
 
         jToggleButton1.setText("Create Strategy");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -229,7 +236,12 @@ public class FrontEnd extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Database");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        databases_cmb.setModel(databases());
+        databases_cmb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                databases_cmbActionPerformed(evt);
+            }
+        });
 
         jCheckBox2.setText("Control Files");
 
@@ -252,7 +264,7 @@ public class FrontEnd extends javax.swing.JFrame {
                         .addComponent(jLabel7))
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addGap(45, 45, 45)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(databases_cmb, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(126, 126, 126)
                         .addComponent(jCheckBox1)
                         .addGap(18, 18, 18)
@@ -268,7 +280,7 @@ public class FrontEnd extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(databases_cmb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBox1)
                     .addComponent(jCheckBox2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -393,7 +405,7 @@ public class FrontEnd extends javax.swing.JFrame {
 
     @SuppressWarnings("null")
     private void addEvt_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEvt_btnActionPerformed
-        newTime nt = new newTime();
+        NewTime nt = new NewTime();
         int i = 1;
         StringBuilder str = new StringBuilder();
         do {
@@ -409,12 +421,12 @@ public class FrontEnd extends javax.swing.JFrame {
                                 "Save & Exit"},
                             "default");
                     nt.getTime(str);
-                    nt = new newTime();
+                    nt = new NewTime();
                     str.append("|");
                     break;
                 case 2:
-                    date_txt.setText(str.toString().substring(0, str.length()-1));
-                    i=100;
+                    date_txt.setText(str.toString().substring(0, str.length() - 1));
+                    i = 100;
                     break;
                 default:
                     break;
@@ -426,17 +438,37 @@ public class FrontEnd extends javax.swing.JFrame {
         date_txt.setText("");
     }//GEN-LAST:event_delteEvt_btnActionPerformed
 
+    private void databases_cmbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_databases_cmbActionPerformed
+        tbs();
+    }//GEN-LAST:event_databases_cmbActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    public javax.swing.ComboBoxModel databases() {
+        java.util.ArrayList<String> vect = (ArrayList<String>) DBManager.getDbs().values().stream().map((x) -> x.getLink_name()).collect(Collectors.toList());
+        return new javax.swing.DefaultComboBoxModel(vect.toArray());
+    }
+
+    private void tbs() {
+        DBManager.getDbs().get((String) databases_cmb.getModel().getSelectedItem()).getTablespaces().stream().forEach((str) -> {
+            tbs.addElement(str);
+        });
+    }
+
+    private javax.swing.DefaultListModel tbs;
     private javax.swing.table.TableModel tabla;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addEvt_btn;
     private javax.swing.JLabel banner_lbl;
+    private javax.swing.JComboBox databases_cmb;
     private javax.swing.JTextField date_txt;
     private javax.swing.JButton delteEvt_btn;
     private javax.swing.JButton filter_btn;
     private javax.swing.JTextField filter_txt;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -444,7 +476,6 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
@@ -463,10 +494,11 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.ButtonGroup modes_group;
+    private javax.swing.JTextField stragedy_txt;
     private javax.swing.JTable table;
+    private javax.swing.JList tablespaces_lst;
     private javax.swing.ButtonGroup time_group;
     // End of variables declaration//GEN-END:variables
 }
