@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class FolderChecker {
 
-    private static String stratDir = "~/narf/executor/strategies";
+    private static String stratDir = System.getProperty("user.home") + "/narf/executor/strategies";
 
     private static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
@@ -65,67 +65,67 @@ public class FolderChecker {
         String[] values = null;
         Strategy str = null;
         try {
-            if(FolderChecker.validateStrategy(f)){
-                 values = Files.lines(f.toPath()).findFirst().get().split("\\t");
-                 str = new Strategy(values[0], values[1], values[2]);
+            if (FolderChecker.validateStrategy(f)) {
+                values = Files.lines(f.toPath()).findFirst().get().split("\\t");
+                str = new Strategy(values[0], values[1], values[2]);
             }
         } catch (IOException ex) {
             Logger.getLogger(FolderChecker.class.getName()).log(Level.SEVERE, null, ex);
         }
         return str;
     }
-    
+
     public static boolean validateStrategy(File f) {//STRATEGY VALIDATION
-        String [] values;
-        System.err.println("----VALIDATING "+f.getAbsolutePath()+"----");
+        String[] values=null;
+        System.err.println("----VALIDATING " + f.getAbsolutePath() + "----");
         try {
-             values = Files.lines(f.toPath()).findFirst().get().split("\\t");
-             if(values!=null&&values.length==3){
+            String entry = Files.lines(f.toPath()).findFirst().get();
+            if(entry!=null)
+                values = entry.split("\\t");
+            if (values != null && values.length == 3) {
                  //System.err.println("The file has three arguments as expected");
-                 //ADD VALIDATIONS FOR RMAN STRING, VALIDATE IF STRATEGY NAME DOESNT EXIST ALREADY
-                 if(SchedulingPattern.validate(values[1])){
-                     //System.err.println("CRON String is valid "+values[1]);
-                     if(StrategyScheduler.existsStrategy(values[0])){
-                         System.err.println("STRATEGY ALREADY EXISTS");
-                         return false;
-                     }
-                     Predictor pr = new Predictor(values[1]);
-                     System.err.println("Next scheduled date "+pr.nextMatchingDate().toString());
-                     return true;
-                 } 
-                 else{
-                     System.err.println("INVALID CRON "+values[0]);
-                 }
-                 
-             }
-            
+                //ADD VALIDATIONS FOR RMAN STRING, VALIDATE IF STRATEGY NAME DOESNT EXIST ALREADY
+                if (SchedulingPattern.validate(values[1])) {
+                    //System.err.println("CRON String is valid "+values[1]);
+                    if (StrategyScheduler.existsStrategy(values[0])) {
+                        System.err.println("STRATEGY ALREADY EXISTS");
+                        return false;
+                    }
+                    Predictor pr = new Predictor(values[1]);
+                    System.err.println("Next scheduled date " + pr.nextMatchingDate().toString());
+                    return true;
+                } else {
+                    System.err.println("INVALID CRON " + values[0]);
+                }
+
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(FolderChecker.class.getName()).log(Level.SEVERE, null, ex);
         }
         //System.err.println("INVALID FILE");
         return false;
     }
-    
-    
-    public static void listenFolder(){//Checks if there are strategy files in the folder and parses them.
-        if(FolderChecker.existFiles()){
+
+    public static void listenFolder() {//Checks if there are strategy files in the folder and parses them.
+        if (FolderChecker.existFiles()) {
             FolderChecker.listFiles().stream().forEach(
-                    (file)->{
+                    (file) -> {
                         Strategy newstr = FolderChecker.readStrategy(file);
-                        if(newstr!=null){
+                        if (newstr != null) {
                             StrategyScheduler.scheduleStrategy(newstr);
-                            
+
                             //Maybe it's better not to delete the files
                             //boolean fileDeleted = file.delete();
                             //if(fileDeleted)
                             //ystem.err.println("Strategy file deleted as it was included in the system.");
-                             System.err.println("A new strategy has been scheduled");
+                            System.err.println("A new strategy has been scheduled");
                         }
-                    }   
+                    }
             );
             //System.gc();
         }
-    
+
     }
 
     public static String getStratDir() {

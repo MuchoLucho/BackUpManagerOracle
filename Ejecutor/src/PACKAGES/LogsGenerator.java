@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class LogsGenerator {
 
-    private static String logDirectory = "~/narf/executor/logs/";//The last "/" is actually important.
+    private static String logDirectory = System.getProperty("user.home")+"/narf/executor/logs/";
     private static String extension = ".txt";
     public static String generateSampleLog(boolean success, Date date, Strategy str) {
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy_mm_dd_hh_mm_ss");
@@ -32,6 +32,30 @@ public class LogsGenerator {
             writer.println(predictor.nextMatchingDate().toString());
             writer.println(predictor.nextMatchingDate().toString());
             writer.println(predictor.nextMatchingDate().toString());
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LogsGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return fullDirectory;
+    }
+    
+    public static String generateLog(boolean success, Date date, Strategy str) {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy_mm_dd_hh_mm_ss");
+        SimpleDateFormat onlyHour = new  SimpleDateFormat("hh:mm");
+        SimpleDateFormat onlyDate = new  SimpleDateFormat("dd/mmyyyy");
+        Predictor predictor = new Predictor(str.getCronString());
+        String filename = str.getName()+"_"+dateformat.format(date);
+        String fullDirectory = new StringBuilder(logDirectory).append(filename).append(extension).toString();
+        File f = new File(fullDirectory);
+        //f.mkdirs();
+        try {
+            PrintWriter writer = new PrintWriter(f);
+            writer.print(str.getName()+"\t");
+            writer.print(("UNKONWN_DB_NAME"));
+            writer.print(onlyDate.format(date)+"\t");
+            writer.print(onlyHour.format(date)+"\t");
+            writer.print((success)?"true":"false");
+            writer.print("\n");
             writer.close();
         } catch (IOException ex) {
             Logger.getLogger(LogsGenerator.class.getName()).log(Level.SEVERE, null, ex);
