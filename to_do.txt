@@ -1,0 +1,8 @@
+--Ejecutar algo en RMAN y capturar que si tuvo exito o no.
+--Archivo de configuracion con la IP del constructor. (clientes para el constructor)
+--Hacer scp de los logs que se generen a el constructor.
+--Decirle a RMAN donde guardar los archivos
+--Agregar a los logs la funcionalidad de SUCCESS o FAILURE
+--OPCIONAL:
+--Que los logs tiren la dirección donde se generó el respaldo
+
