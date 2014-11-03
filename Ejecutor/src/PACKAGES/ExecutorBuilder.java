@@ -1,8 +1,9 @@
 package PACKAGES;
 
+import it.sauronsoftware.cron4j.SchedulerListener;
 import java.util.Date;
 
-public class Executor {
+public class ExecutorBuilder{
 
     public static Runnable executeSampleStrategy(Strategy str) {
        return ()->{
@@ -12,14 +13,12 @@ public class Executor {
     }
     public static Runnable executeStrategy(Strategy str) {
        return ()->{
+           StrategyExecutor exe = new StrategyExecutor();
+           exe.executeRMANFile(str.getRmanString());
            System.out.println("EXECUTING THE FOLLOWING RMAN COMMAND: "+ str.getRmanString());
            LogsGenerator.generateSampleLog(true,new Date(), str);
        };
     }
-    private static void callRMAN(Strategy str){
-        String rmanFile = str.getRmanString();
-    }
-
 }
 
 /*

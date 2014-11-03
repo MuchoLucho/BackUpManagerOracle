@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class FolderChecker {
 
-    private static String stratDir = System.getProperty("user.home") + "/narf/executor/strategies";
+    //private static String NARFDirs.strats = System.getProperty("user.home") + "/narf/executor/strategies";
 
     private static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
@@ -47,7 +47,7 @@ public class FolderChecker {
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
-            filesInFolder = Files.walk(Paths.get(stratDir))
+            filesInFolder = Files.walk(Paths.get(NARFDirs.strats))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
@@ -129,12 +129,9 @@ public class FolderChecker {
     }
 
     public static String getStratDir() {
-        return stratDir;
+        return NARFDirs.strats;
     }
 
-    public static void setStratDir(String stratDir) {
-        FolderChecker.stratDir = stratDir;
-    }
 
     public static void deactivateStrategy(Strategy str) {
         System.err.println("NOT IMPLEMENTED YET. SHOULD WRITE FALSE TO THE END OF FILE");
