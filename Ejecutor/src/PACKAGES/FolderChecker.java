@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class FolderChecker {
 
-    private static String stratDir = System.getProperty("user.home") + "/narf/executor/strategies";
+    //private static String NARFDirs.strats = System.getProperty("user.home") + "/narf/executor/strategies";
 
     private static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
@@ -47,7 +47,7 @@ public class FolderChecker {
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
-            filesInFolder = Files.walk(Paths.get(stratDir))
+            filesInFolder = Files.walk(Paths.get(NARFDirs.strats))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
@@ -77,7 +77,7 @@ public class FolderChecker {
 
     public static boolean validateStrategy(File f) {//STRATEGY VALIDATION
         String[] values=null;
-        System.err.println("----VALIDATING " + f.getAbsolutePath() + "----");
+        //System.err.println("----VALIDATING " + f.getAbsolutePath() + "----");
         try {
             String entry = Files.lines(f.toPath()).findFirst().get();
             if(entry!=null)
@@ -88,7 +88,7 @@ public class FolderChecker {
                 if (SchedulingPattern.validate(values[1])) {
                     //System.err.println("CRON String is valid "+values[1]);
                     if (StrategyScheduler.existsStrategy(values[0])) {
-                        System.err.println("STRATEGY ALREADY EXISTS");
+                        //System.err.println("STRATEGY ALREADY EXISTS");
                         return false;
                     }
                     Predictor pr = new Predictor(values[1]);
@@ -129,12 +129,9 @@ public class FolderChecker {
     }
 
     public static String getStratDir() {
-        return stratDir;
+        return NARFDirs.strats;
     }
 
-    public static void setStratDir(String stratDir) {
-        FolderChecker.stratDir = stratDir;
-    }
 
     public static void deactivateStrategy(Strategy str) {
         System.err.println("NOT IMPLEMENTED YET. SHOULD WRITE FALSE TO THE END OF FILE");

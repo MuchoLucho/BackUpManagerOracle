@@ -25,7 +25,7 @@ public class StrategyScheduler extends it.sauronsoftware.cron4j.Scheduler{
     public static boolean scheduleStrategy(Strategy str){//Receives a valid strategy and schedules it.
         String cronString = str.getCronString();    
         if(!StrategyScheduler.existsStrategy(str.getName())){
-            String cronID = scheduler.schedule(cronString, Executor.executeStrategy(str));
+            String cronID = scheduler.schedule(cronString, ExecutorBuilder.executeStrategy(str));
             str.setCronID(cronID);
             strategyMap.put(str.getName(), str);//Putting the strategy in the hashmap for reference purposes.
             return true;
