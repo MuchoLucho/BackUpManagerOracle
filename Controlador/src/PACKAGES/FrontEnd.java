@@ -1,5 +1,6 @@
 package PACKAGES;
 
+import static PACKAGES.ConstructorFiles.RmanFull;
 import static PACKAGES.ConstructorFiles.RmanIncremental;
 import static PACKAGES.ConstructorFiles.RmanWhole;
 import static PACKAGES.DBManager.getNameFromDB;
@@ -497,13 +498,14 @@ public class FrontEnd extends javax.swing.JFrame {
                             RmanIncremental(getNameFromDB(db), name, getLevel(), logfiles, control_chk.isSelected(), (String[]) tablespaces_lst.getSelectedValuesList().toArray());
                             break;
                         case "Full BackUp":
-                            //RmanFull(String rman, String db, String tbs[])
+                            RmanFull(name, getNameFromDB(db), (String[]) tablespaces_lst.getSelectedValuesList().toArray(), logfiles);
                             break;
                     }
                 }
             }
-            //Create StrategyFile   
-
+            //Create StrategyFile 
+            ConstructorFiles.createStrategyFile(name, date_txt.getText(), true);
+            //ExeConnection.metodoQueEnvia(estrategia) //envia ambas cosas
         } else {
             //show error -> Do nothing
         }
