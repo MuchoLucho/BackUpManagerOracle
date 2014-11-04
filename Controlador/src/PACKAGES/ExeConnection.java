@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 
 public class ExeConnection {
 
+    //String output = this.executeCommand("scp " + logFullPath + " " + NARFDirs.motherUser + "@" + NARFDirs.motherIP + ":" + NARFDirs.motherLogs);
+
     public static boolean sendFiles(String strategy) {
 
         return true;
