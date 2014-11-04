@@ -2,7 +2,6 @@ package PACKAGES;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,25 +12,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.table.DefaultTableModel;
 
-public class Manager implements Serializable {
-    /*VARIABLES*/
-
-    public static Object[][] table;
-    public static DefaultTableModel tm = new DefaultTableModelImpl(
-            null,
-            new String[]{
-                "Strategy", "Database", "Time", "Method", "Active"
-            });
-
-    /*METHODS*/
-    public static Object[][] getTable(String str) {
-        table = toTableModel(str);
-        return table;
-    }
-
-    public static void filter(String str) {
-        tm.setDataVector(Manager.getTable(str), new String[]{"Strategy", "Database", "Time", "Method", "Active"});
-    }
+public class Manager {
 
     public static Object[][] toTableModel(String str) {
         int i = 0;
@@ -40,7 +21,7 @@ public class Manager implements Serializable {
         Object[][] ret = new Object[aux.length][5];
         for (Object o : aux) {
             dummy = (Object[]) o;
-            ret[i++] = new Object[]{(String) dummy[0], (String) dummy[1], (String) dummy[2], (String) dummy[3], dummy[4].equals("true")};
+            ret[i++] = new Object[]{(String) dummy[0], (String) dummy[1], (String) dummy[2], (String) dummy[3], (String) dummy[4]};
         }
         return ret;
     }
@@ -64,7 +45,7 @@ public class Manager implements Serializable {
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
-            filesInFolder = Files.walk(Paths.get("./bkup_files"))
+            filesInFolder = Files.walk(Paths.get(System.getProperty("user.home") + "/narf/controller/strategies"))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
@@ -72,6 +53,25 @@ public class Manager implements Serializable {
             Logger.getLogger(ConstructorFiles.class.getName()).log(Level.SEVERE, null, ex);
         }
         return filesInFolder;
+    }
+
+    public static Object[][] table;
+
+    public static Object[][] getTable(String str) {
+        table = toTableModel(str);
+        return table;
+    }
+
+    public static DefaultTableModel tm = new DefaultTableModelImpl(
+            Manager.getTable("\t"),
+            new String[]{
+                "Strategy", "Time", "Method", "Active", "Database"
+            });
+
+    public static void filter(String str) {
+        tm.setDataVector(Manager.getTable(str), new String[]{
+            "Strategy", "Time", "Method", "Active", "Database"
+        });
     }
 
     /*Main*/

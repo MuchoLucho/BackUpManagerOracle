@@ -7,6 +7,7 @@ import static PACKAGES.DBManager.getNameFromDB;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
@@ -75,6 +76,12 @@ public class FrontEnd extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NARF BU Manager");
         setResizable(false);
+
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/banner.png"))); // NOI18N
 
@@ -488,7 +495,6 @@ public class FrontEnd extends javax.swing.JFrame {
             String db = (String) databases_cmb.getModel().getSelectedItem();
             String time = date_txt.getText();
             boolean logfiles = archive_chk.isSelected();
-            Object[] aux = tablespaces_lst.getSelectedValuesList().toArray();
             //Create RmanFile
             for (Enumeration<AbstractButton> buttons = modes_group.getElements(); buttons.hasMoreElements();) {
                 AbstractButton button = buttons.nextElement();
@@ -498,16 +504,20 @@ public class FrontEnd extends javax.swing.JFrame {
                             RmanWhole(name, getNameFromDB(db), logfiles);
                             break;
                         case "Incremental BackUp":
+                            List<String> a = tablespaces_lst.getSelectedValuesList();
+                            Object[] aux = a.toArray();
                             RmanIncremental(getNameFromDB(db), name, getLevel(), logfiles, control_chk.isSelected(), Arrays.copyOf(aux, aux.length, String[].class));
                             break;
                         case "Full BackUp":
-                            RmanFull(name, getNameFromDB(db), Arrays.copyOf(aux, aux.length, String[].class), logfiles);
+                            List<String> a2 = tablespaces_lst.getSelectedValuesList();
+                            Object[] aux2 = a2.toArray();
+                            RmanFull(name, getNameFromDB(db), Arrays.copyOf(aux2, aux2.length, String[].class), logfiles);
                             break;
                     }
                 }
             }
             //Create StrategyFile 
-            ConstructorFiles.createStrategyFile(name, time, true);
+            ConstructorFiles.createStrategyFile(name, db, time, true);
             DB dbinfo = DBManager.getDbs().get(db);
             if (dbinfo != null && dbinfo.getIP() != null && dbinfo.getLinux_user() != null) {
                 ExeConnection.sendFiles(name, dbinfo.getLinux_user(), dbinfo.getIP()); //envia ambas cosas
@@ -544,7 +554,7 @@ public class FrontEnd extends javax.swing.JFrame {
                         control_chk.setEnabled(false);
                         note_lbl.setEnabled(false);
                         tablespace_lbl.setEnabled(false);
-                        tablespaces_lst.setSelectionInterval(0, tbs.getSize());
+                        tablespaces_lst.setSelectionInterval(0, tbs.getSize()-1);
                         tablespaces_lst.setEnabled(false);
                         level_lbl.setEnabled(false);
                         lvl_0_rnd.setEnabled(false);
@@ -578,6 +588,10 @@ public class FrontEnd extends javax.swing.JFrame {
     private void createStrategy_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createStrategy_btnActionPerformed
         createStragedy();
     }//GEN-LAST:event_createStrategy_btnActionPerformed
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        Manager.filter("\t");
+    }//GEN-LAST:event_jTabbedPane1StateChanged
 
     public javax.swing.ComboBoxModel databases() {
         java.util.ArrayList<String> vect = (ArrayList<String>) DBManager.getDbs().values().stream().map((x) -> x.getLink_name()).collect(Collectors.toList());

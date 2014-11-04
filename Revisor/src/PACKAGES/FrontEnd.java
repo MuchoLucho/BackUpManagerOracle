@@ -4,6 +4,7 @@ public class FrontEnd extends javax.swing.JFrame {
 
     public FrontEnd() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")

@@ -6,12 +6,12 @@ import java.io.FileWriter;
 public class ConstructorFiles {
 
     //--> EC0012	* * * * *	rman.rman	true
-    public static void createStrategyFile(String name, String time, boolean active) {
+    public static void createStrategyFile(String name, String DB, String time, boolean active) {
         StringBuilder esc = new StringBuilder();
         try {
             File archivo = new File(rutaStrategies + name + ".txt");
             try (FileWriter escribir = new FileWriter(archivo)) {
-                esc.append(name).append("\t").append(time).append("\t").append(name).append(".txt\t").append(active);
+                esc.append(name).append("\t").append(time).append("\t").append(name).append(".rman\t").append(active).append("\t").append(DB);
                 escribir.write(esc.toString());
             }
         } catch (Exception e) {

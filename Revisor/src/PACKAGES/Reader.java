@@ -15,7 +15,6 @@ public class Reader {
 
     public static Object[][] toTableModel(String str) {
         int i = 0;
-        i = 0;
         Object[] aux = readFiles(str).toArray();
         Object[] dummy;
         Object[][] ret = new Object[aux.length][5];
@@ -45,7 +44,7 @@ public class Reader {
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
-            filesInFolder = Files.walk(Paths.get(System.getenv("user.home") + "/narf/revisor/logs"))
+            filesInFolder = Files.walk(Paths.get(System.getProperty("user.home") + "/narf/revisor/logs"))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
