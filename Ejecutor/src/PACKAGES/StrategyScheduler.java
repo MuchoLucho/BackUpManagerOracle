@@ -16,7 +16,7 @@ public class StrategyScheduler extends it.sauronsoftware.cron4j.Scheduler{
     private static Scheduler scheduler = new Scheduler();
     public static boolean existsStrategy(String name){
         return strategyMap.containsKey(name);
-    } 
+    }
     public static String getStrategyID(Strategy str){
         return strategyMap.keySet().stream()
                 .filter((key)->strategyMap.get(key).equals(str))
@@ -34,6 +34,10 @@ public class StrategyScheduler extends it.sauronsoftware.cron4j.Scheduler{
         return false;
     }
     
+    public static Strategy getStrategyFromID(String id){
+        return strategyMap.get(id);
+    }
+    
     public static boolean startScheduler(){
         StrategyScheduler.scheduler.start();
         return true;
@@ -42,11 +46,21 @@ public class StrategyScheduler extends it.sauronsoftware.cron4j.Scheduler{
         StrategyScheduler.scheduler.stop();
         return true;
     }
-    public static boolean descheduleStrategy(Strategy str){
-        StrategyScheduler.scheduler.deschedule(str.getCronID());
-        str.setActive(false);
-        FolderChecker.deactivateStrategy(str);
-        return true;
+//    public static boolean descheduleStrategy(Strategy str){
+//        StrategyScheduler.scheduler.deschedule(str.getCronID());
+//        str.setActive(false);
+//        FolderChecker.deactivateStrategy(str);
+//        return true;
+//    }
+
+    public static Strategy getStrategyFromName(String string) {
+        return strategyMap.get(string);
+    }
+
+    static void deactivateStrategy(Strategy strategy) {
+        String cronString = strategy.getCronID();
+        scheduler.deschedule(cronString);
+        strategyMap.remove(strategy.getName());
     }
     
 }

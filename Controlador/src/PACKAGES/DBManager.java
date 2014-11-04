@@ -53,7 +53,7 @@ public class DBManager {
         PreparedStatement pst;
         ResultSet rs;
         String sql;
-        if (conectDB("narf", "narf", "localhost", "1521", "BD1")) {
+        if (connectDB()) {
             sql = "select name from v$database@" + db_link;
             String db_name = "XE";
             try {
@@ -70,8 +70,12 @@ public class DBManager {
             return "XE";
         }
     }
-
-    public static boolean conectDB(String username, String pass, String hostName, String port, String SID) {
+    
+    public static boolean connectDB(){
+        return connectDB(Parameters.dbusername, Parameters.dbpassword,"localhost",Parameters.dbport,Parameters.dbInstance);
+    }
+    
+    public static boolean connectDB(String username, String pass, String hostName, String port, String SID) {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
             con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:" + port + ":" + SID, username, pass);
@@ -85,7 +89,7 @@ public class DBManager {
         PreparedStatement pst;
         ResultSet rs;
         String sql;
-        if (conectDB("narf", "narf", "localhost", "1521", "BD1")) {
+        if (connectDB()) {
             sql = "select db_link from all_db_links";
             String db_link;
             try {
