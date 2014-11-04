@@ -15,11 +15,12 @@ import javax.swing.table.DefaultTableModel;
 
 public class Manager implements Serializable {
     /*VARIABLES*/
+
     public static Object[][] table;
     public static DefaultTableModel tm = new DefaultTableModelImpl(
             null,
             new String[]{
-                "Strategy", "Database", "Days", "Time", "Method"
+                "Strategy", "Database", "Time", "Method", "Active"
             });
 
     /*METHODS*/
@@ -29,48 +30,10 @@ public class Manager implements Serializable {
     }
 
     public static void filter(String str) {
-        tm.setDataVector(Manager.getTable(str), new String[]{"Strategy", "Database", "Time", "Method"});
+        tm.setDataVector(Manager.getTable(str), new String[]{"Strategy", "Database", "Time", "Method", "Active"});
     }
 
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrontEnd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        java.awt.EventQueue.invokeLater(() -> {
-            new FrontEnd().setVisible(true);
-        });
-    }
-
-    private static class DefaultTableModelImpl extends DefaultTableModel {
-
-        public DefaultTableModelImpl(Object[][] data, Object[] columnNames) {
-            super(data, columnNames);
-        }
-        Class[] types = new Class[]{
-            java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-        };
-        boolean[] canEdit = new boolean[]{
-            false, false, false, false, false
-        };
-
-        @Override
-        public Class getColumnClass(int columnIndex) {
-            return types[columnIndex];
-        }
-
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return canEdit[columnIndex];
-        }
-    }
-        public static Object[][] toTableModel(String str) {
+    public static Object[][] toTableModel(String str) {
         int i = 0;
         Object[] aux = readFiles(str).toArray();
         Object[] dummy;
@@ -110,6 +73,45 @@ public class Manager implements Serializable {
         }
         return filesInFolder;
     }
-    
-    
+
+    /*Main*/
+    public static void main(String args[]) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FrontEnd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FrontEnd().setVisible(true);
+        });
+    }
+
+    /*Inner classes*/
+    private static class DefaultTableModelImpl extends DefaultTableModel {
+
+        public DefaultTableModelImpl(Object[][] data, Object[] columnNames) {
+            super(data, columnNames);
+        }
+        Class[] types = new Class[]{
+            java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+        };
+        boolean[] canEdit = new boolean[]{
+            false, false, false, false, false
+        };
+
+        @Override
+        public Class getColumnClass(int columnIndex) {
+            return types[columnIndex];
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit[columnIndex];
+        }
+    }
 }

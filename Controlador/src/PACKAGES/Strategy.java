@@ -1,11 +1,10 @@
 package PACKAGES;
 
 public class Strategy {
-
+    
     private String cronString = "* * * * *";
     private String name = "EC00001";
     private String rmanString = "rman.rman";
-    private String cronID = null;
     private boolean active = true;
 
     public Strategy(String name, String cron, String rman) {
@@ -38,14 +37,6 @@ public class Strategy {
         this.rmanString = rmanString;
     }
 
-    public String getCronID() {
-        return cronID;
-    }
-
-    public void setCronID(String cronID) {
-        this.cronID = cronID;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -60,3 +51,4 @@ public class Strategy {
     }
 
 }
+

@@ -1,7 +1,9 @@
 package PACKAGES;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.stream.Collectors;
+import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -21,6 +23,7 @@ public class FrontEnd extends javax.swing.JFrame {
 
         modes_group = new javax.swing.ButtonGroup();
         time_group = new javax.swing.ButtonGroup();
+        incLevel_group = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -32,6 +35,9 @@ public class FrontEnd extends javax.swing.JFrame {
         incremetnal_rnd = new javax.swing.JRadioButton();
         total_rnd = new javax.swing.JRadioButton();
         name_lbl = new javax.swing.JLabel();
+        lvl_1_rnd = new javax.swing.JRadioButton();
+        lvl_0_rnd = new javax.swing.JRadioButton();
+        level_lbl = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         date_txt = new javax.swing.JTextField();
         addEvt_btn = new javax.swing.JButton();
@@ -40,8 +46,8 @@ public class FrontEnd extends javax.swing.JFrame {
         tablespace_lbl = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablespaces_lst = new javax.swing.JList();
-        jLabel1 = new javax.swing.JLabel();
-        create_btn = new javax.swing.JToggleButton();
+        note_lbl = new javax.swing.JLabel();
+        createStrategy_btn = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         database_lbl = new javax.swing.JLabel();
         databases_cmb = new javax.swing.JComboBox();
@@ -82,39 +88,76 @@ public class FrontEnd extends javax.swing.JFrame {
         type_lbl.setText("BackUp Mode");
 
         modes_group.add(full_rnd);
+        full_rnd.setSelected(true);
         full_rnd.setText("Full BackUp");
+        full_rnd.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                mode_change(evt);
+            }
+        });
 
         modes_group.add(incremetnal_rnd);
         incremetnal_rnd.setText("Incremental BackUp");
+        incremetnal_rnd.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                mode_change(evt);
+            }
+        });
 
         modes_group.add(total_rnd);
-        total_rnd.setSelected(true);
-        total_rnd.setText("Total BackUp");
+        total_rnd.setText("Whole BackUp");
+        total_rnd.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                mode_change(evt);
+            }
+        });
 
         name_lbl.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
         name_lbl.setForeground(new java.awt.Color(0, 0, 0));
         name_lbl.setText("Name of Strategy");
+
+        incLevel_group.add(lvl_1_rnd);
+        lvl_1_rnd.setText("1");
+        lvl_1_rnd.setEnabled(false);
+
+        incLevel_group.add(lvl_0_rnd);
+        lvl_0_rnd.setSelected(true);
+        lvl_0_rnd.setText("0");
+        lvl_0_rnd.setEnabled(false);
+
+        level_lbl.setText("Level");
+        level_lbl.setEnabled(false);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(name_lbl)
-                .addGap(184, 184, 184)
-                .addComponent(type_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(name_lbl))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(stragedy_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(88, 88, 88)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(type_lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(full_rnd, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(total_rnd, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(incremetnal_rnd, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(level_lbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lvl_0_rnd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lvl_1_rnd)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(stragedy_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(total_rnd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(full_rnd, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(incremetnal_rnd, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,6 +172,11 @@ public class FrontEnd extends javax.swing.JFrame {
                     .addComponent(total_rnd)
                     .addComponent(full_rnd)
                     .addComponent(incremetnal_rnd))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lvl_1_rnd)
+                    .addComponent(lvl_0_rnd)
+                    .addComponent(level_lbl))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -157,14 +205,16 @@ public class FrontEnd extends javax.swing.JFrame {
         tablespace_lbl.setText("Tablespace");
 
         tablespaces_lst.setModel(tbs);
+        tablespaces_lst.setSelectedIndex(1);
+        tablespaces_lst.setSelectionBackground(new java.awt.Color(255, 102, 102));
         jScrollPane1.setViewportView(tablespaces_lst);
 
-        jLabel1.setText("*Press Ctrl+Click to add more than one TBs");
+        note_lbl.setText("*Press Ctrl+Click to add more than one TBs");
 
-        create_btn.setText("Create Strategy");
-        create_btn.addActionListener(new java.awt.event.ActionListener() {
+        createStrategy_btn.setText("Create Stragedy");
+        createStrategy_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                create_btnActionPerformed(evt);
+                createStrategy_btnActionPerformed(evt);
             }
         });
 
@@ -182,7 +232,7 @@ public class FrontEnd extends javax.swing.JFrame {
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGap(48, 48, 48)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(note_lbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane1))
                         .addGap(112, 112, 112)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -191,7 +241,7 @@ public class FrontEnd extends javax.swing.JFrame {
                                 .addComponent(addEvt_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(delteEvt_btn))
-                            .addComponent(create_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(createStrategy_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
@@ -206,7 +256,7 @@ public class FrontEnd extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1))
+                        .addComponent(note_lbl))
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(date_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,7 +265,7 @@ public class FrontEnd extends javax.swing.JFrame {
                             .addComponent(addEvt_btn)
                             .addComponent(delteEvt_btn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(create_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(createStrategy_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
@@ -294,7 +344,7 @@ public class FrontEnd extends javax.swing.JFrame {
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Create new Strategy", jPanel1);
@@ -425,9 +475,57 @@ public class FrontEnd extends javax.swing.JFrame {
         tbs();
     }//GEN-LAST:event_databases_cmbActionPerformed
 
-    private void create_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_btnActionPerformed
-        
-    }//GEN-LAST:event_create_btnActionPerformed
+    private void createStragedy() {
+        tablespaces_lst.getSelectedValuesList();
+        String name = stragedy_txt.getText();
+        String db = (String) databases_cmb.getModel().getSelectedItem();
+        String time = date_txt.getText();
+    }
+
+    private void mode_change(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mode_change
+        for (Enumeration<AbstractButton> buttons = modes_group.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                switch (button.getText()) {
+                    case "Whole BackUp":
+                        control_rnd.setSelected(true);
+                        control_rnd.setEnabled(false);
+                        note_lbl.setEnabled(false);
+                        tablespace_lbl.setEnabled(false);
+                        tablespaces_lst.setSelectionInterval(0, tbs.getSize());
+                        tablespaces_lst.setEnabled(false);
+                        level_lbl.setEnabled(false);
+                        lvl_0_rnd.setEnabled(false);
+                        lvl_1_rnd.setEnabled(false);
+                        break;
+                    case "Incremental BackUp":
+                        control_rnd.setEnabled(true);
+                        note_lbl.setEnabled(true);
+                        tablespace_lbl.setEnabled(true);
+                        tablespaces_lst.setSelectedIndex(0);
+                        tablespaces_lst.setEnabled(true);
+                        level_lbl.setEnabled(true);
+                        lvl_0_rnd.setEnabled(true);
+                        lvl_1_rnd.setEnabled(true);
+                        break;
+                    case "Full BackUp":
+                        control_rnd.setEnabled(true);
+                        note_lbl.setEnabled(true);
+                        tablespace_lbl.setEnabled(true);
+                        tablespaces_lst.setSelectedIndex(0);
+                        tablespaces_lst.setEnabled(true);
+                        level_lbl.setEnabled(false);
+                        lvl_0_rnd.setEnabled(false);
+                        lvl_1_rnd.setEnabled(false);
+                        break;
+                }
+            }
+        }
+    }//GEN-LAST:event_mode_change
+
+    private void createStrategy_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createStrategy_btnActionPerformed
+        createStragedy();
+    }//GEN-LAST:event_createStrategy_btnActionPerformed
 
     public javax.swing.ComboBoxModel databases() {
         java.util.ArrayList<String> vect = (ArrayList<String>) DBManager.getDbs().values().stream().map((x) -> x.getLink_name()).collect(Collectors.toList());
@@ -435,19 +533,23 @@ public class FrontEnd extends javax.swing.JFrame {
     }
 
     private void tbs() {
+        if (!tbs.isEmpty()) {
+            tbs.clear();
+        }
         DBManager.getDbs().get((String) databases_cmb.getModel().getSelectedItem()).getTablespaces().stream().forEach((str) -> {
             tbs.addElement(str);
         });
+        tablespaces_lst.setSelectedIndex(0);
     }
 
-    private javax.swing.DefaultListModel tbs;
+    private final javax.swing.DefaultListModel tbs;
     private javax.swing.table.TableModel tabla;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addEvt_btn;
     private javax.swing.JCheckBox archive_rnd;
     private javax.swing.JLabel banner_lbl;
     private javax.swing.JCheckBox control_rnd;
-    private javax.swing.JToggleButton create_btn;
+    private javax.swing.JButton createStrategy_btn;
     private javax.swing.JLabel database_lbl;
     private javax.swing.JComboBox databases_cmb;
     private javax.swing.JTextField date_txt;
@@ -455,9 +557,9 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JButton filter_btn;
     private javax.swing.JTextField filter_txt;
     private javax.swing.JRadioButton full_rnd;
+    private javax.swing.ButtonGroup incLevel_group;
     private javax.swing.JLabel include_lbl;
     private javax.swing.JRadioButton incremetnal_rnd;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
@@ -473,8 +575,12 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel level_lbl;
+    private javax.swing.JRadioButton lvl_0_rnd;
+    private javax.swing.JRadioButton lvl_1_rnd;
     private javax.swing.ButtonGroup modes_group;
     private javax.swing.JLabel name_lbl;
+    private javax.swing.JLabel note_lbl;
     private javax.swing.JTextField stragedy_txt;
     private javax.swing.JTable table;
     private javax.swing.JLabel tablespace_lbl;
