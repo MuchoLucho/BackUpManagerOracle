@@ -21,8 +21,8 @@ public class LogsGenerator {
     public static String generateSampleLog(boolean success, Date date, Strategy str) {
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy_mm_dd_hh_mm_ss");
         Predictor predictor = new Predictor(str.getCronString());
-        String filename = str.getName() + "_" + dateformat.format(date);
-        String fullDirectory = new StringBuilder(NARFDirs.logs).append(filename).append(extension).toString();
+        String filename = str.getName() + "_" + dateformat.format(date)+extension;
+        String fullDirectory = new StringBuilder(NARFDirs.logs).append(filename).toString();
         File f = new File(fullDirectory);
         //f.mkdirs();
         try {
@@ -47,14 +47,14 @@ public class LogsGenerator {
         SimpleDateFormat onlyHour = new SimpleDateFormat("hh:mm");
         SimpleDateFormat onlyDate = new SimpleDateFormat("dd/mmyyyy");
         Predictor predictor = new Predictor(str.getCronString());
-        String filename = str.getName() + "_" + dateformat.format(date);
-        String fullDirectory = new StringBuilder(NARFDirs.logs).append(filename).append(extension).toString();
+        String filename = str.getName() + "_" + dateformat.format(date)+extension;
+        String fullDirectory = new StringBuilder(NARFDirs.logs).append(filename).toString();
         File f = new File(fullDirectory);
         //f.mkdirs();
         try {
             PrintWriter writer = new PrintWriter(f);
             writer.print(str.getName() + "\t");
-            writer.print(("UNKONWN_DB_NAME"));
+            writer.print((NARFDirs.dbInstance)+"\t");
             writer.print(onlyDate.format(date) + "\t");
             writer.print(onlyHour.format(date) + "\t");
             writer.print((success) ? "true" : "false");
@@ -63,7 +63,7 @@ public class LogsGenerator {
         } catch (IOException ex) {
             Logger.getLogger(LogsGenerator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return fullDirectory;
+        return filename;
     }
 
     public static String getLogDirectory() {

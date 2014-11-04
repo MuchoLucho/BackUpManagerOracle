@@ -77,7 +77,7 @@ public class FolderChecker {
 
     public static boolean validateStrategy(File f) {//STRATEGY VALIDATION
         String[] values=null;
-        System.err.println("----VALIDATING " + f.getAbsolutePath() + "----");
+        //System.err.println("----VALIDATING " + f.getAbsolutePath() + "----");
         try {
             String entry = Files.lines(f.toPath()).findFirst().get();
             if(entry!=null)
@@ -88,7 +88,7 @@ public class FolderChecker {
                 if (SchedulingPattern.validate(values[1])) {
                     //System.err.println("CRON String is valid "+values[1]);
                     if (StrategyScheduler.existsStrategy(values[0])) {
-                        System.err.println("STRATEGY ALREADY EXISTS");
+                        //System.err.println("STRATEGY ALREADY EXISTS");
                         return false;
                     }
                     Predictor pr = new Predictor(values[1]);

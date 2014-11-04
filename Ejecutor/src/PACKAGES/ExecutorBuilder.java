@@ -13,10 +13,18 @@ public class ExecutorBuilder{
     }
     public static Runnable executeStrategy(Strategy str) {
        return ()->{
+           System.err.println("*********RUNNING THE"+str.getName()+" STRATEGY***********");
            StrategyExecutor exe = new StrategyExecutor();
-           exe.executeRMANFile(str.getRmanString());
-           System.out.println("EXECUTING THE FOLLOWING RMAN COMMAND: "+ str.getRmanString());
-           LogsGenerator.generateSampleLog(true,new Date(), str);
+           boolean success = exe.executeRMANFile(str.getRmanString());
+           System.out.println("EXECUTION OF RMAN SCRIPT : "+ str.getRmanString()+" "+((success)?"SUCCEEDED":"FAILED"));
+           String logFile = LogsGenerator.generateLog(success,new Date(), str);
+           boolean logSent = exe.sendResultLog(logFile);
+           if(!logSent){
+               System.err.println("***FAILURE SENDING LOGFILE "+logFile+" to mothership!!!");
+           }
+           else{
+               System.err.println("LOG SENT returned success");
+           }
        };
     }
 }
