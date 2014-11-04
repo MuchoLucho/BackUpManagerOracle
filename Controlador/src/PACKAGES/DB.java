@@ -42,7 +42,7 @@ public class DB{
     private final String link_name;
     private final String db_name;
     private String IP="127.0.0.1";
-    private String linux_user="luiska";
+    private String linux_user="unset";
     private final ArrayList<String> tablespaces;
 
  

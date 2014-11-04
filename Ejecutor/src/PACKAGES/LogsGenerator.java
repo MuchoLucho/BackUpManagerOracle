@@ -45,7 +45,7 @@ public class LogsGenerator {
     public static String generateLog(boolean success, Date date, Strategy str) {
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy_mm_dd_hh_mm_ss");
         SimpleDateFormat onlyHour = new SimpleDateFormat("hh:mm");
-        SimpleDateFormat onlyDate = new SimpleDateFormat("dd/mmyyyy");
+        SimpleDateFormat onlyDate = new SimpleDateFormat("dd/mm/yyyy");
         Predictor predictor = new Predictor(str.getCronString());
         String filename = str.getName() + "_" + dateformat.format(date)+extension;
         String fullDirectory = new StringBuilder(NARFDirs.logs).append(filename).toString();

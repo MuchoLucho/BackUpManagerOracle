@@ -19,6 +19,7 @@ public class FrontEnd extends javax.swing.JFrame {
         this.tbs = new DefaultListModel();
         DBManager.llenado();
         Parameters.configureNodes();
+        Parameters.configureDB();
         initComponents();
         tbs();
         this.setLocationRelativeTo(null);

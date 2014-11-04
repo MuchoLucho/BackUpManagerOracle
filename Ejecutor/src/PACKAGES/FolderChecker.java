@@ -74,7 +74,14 @@ public class FolderChecker {
         }
         return str;
     }
-
+    /*
+    [0] strat name
+    [1] cron string
+    [2] rman string
+    [3] active
+    [4] db_name (useless)
+    
+    */
     public static boolean validateStrategy(File f) {//STRATEGY VALIDATION
         String[] values=null;
         //System.err.println("----VALIDATING " + f.getAbsolutePath() + "----");
@@ -82,18 +89,28 @@ public class FolderChecker {
             String entry = Files.lines(f.toPath()).findFirst().get();
             if(entry!=null)
                 values = entry.split("\\t");
-            if (values != null && values.length == 3) {
+            if (values != null && values.length == 5) {
                  //System.err.println("The file has three arguments as expected");
                 //ADD VALIDATIONS FOR RMAN STRING, VALIDATE IF STRATEGY NAME DOESNT EXIST ALREADY
-                if (SchedulingPattern.validate(values[1])) {
+                if (SchedulingPattern.validate(values[1])) {//Validates CRON STRING
                     //System.err.println("CRON String is valid "+values[1]);
                     if (StrategyScheduler.existsStrategy(values[0])) {
                         //System.err.println("STRATEGY ALREADY EXISTS");
+                        Strategy strategy = StrategyScheduler.getStrategyFromName(values[0]);
+                        if(!Boolean.toString(strategy.isActive()).equals(values[3])){//MEANS THERE IS A CHANGE IN ACTIVITY, ADD STRATEGY AND REMOVE THE OLD ONE.
+                            strategy.setActive(!strategy.isActive());
+                            if(!strategy.isActive()){
+                                StrategyScheduler.deactivateStrategy(strategy);
+                            }
+                        }
                         return false;
                     }
+                    
                     Predictor pr = new Predictor(values[1]);
                     System.err.println("Next scheduled date " + pr.nextMatchingDate().toString());
-                    return true;
+                    if(!values[3].equals("true"))
+                        System.err.println("INACTIVE STRATEGY");
+                    return values[3].equals("true");//Finally returns if the strategy is valid by validating if its active.
                 } else {
                     System.err.println("INVALID CRON " + values[0]);
                 }
@@ -114,11 +131,6 @@ public class FolderChecker {
                         Strategy newstr = FolderChecker.readStrategy(file);
                         if (newstr != null) {
                             StrategyScheduler.scheduleStrategy(newstr);
-
-                            //Maybe it's better not to delete the files
-                            //boolean fileDeleted = file.delete();
-                            //if(fileDeleted)
-                            //ystem.err.println("Strategy file deleted as it was included in the system.");
                             System.err.println("A new strategy has been scheduled");
                         }
                     }
@@ -131,10 +143,4 @@ public class FolderChecker {
     public static String getStratDir() {
         return NARFDirs.strats;
     }
-
-
-    public static void deactivateStrategy(Strategy str) {
-        System.err.println("NOT IMPLEMENTED YET. SHOULD WRITE FALSE TO THE END OF FILE");
-    }
-
 }
