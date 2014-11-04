@@ -9,10 +9,11 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Parameters {//All the directories and files needed for the software to work. Files must always end with /
+
     public static final String home = System.getProperty("user.home");
 
     public static final String configFile = home + "/narf/controller/config";
-    
+
     public static void configureNodes() {
         File configFile = new File(Parameters.configFile);
         String mUser = null;
@@ -21,10 +22,10 @@ public class Parameters {//All the directories and files needed for the software
             //LIST OF ALL CONFIG LINES.
             ArrayList<String> configLines = (ArrayList<String>) Files.lines(configFile.toPath()).collect(Collectors.toList()); //In case I need any more parameters
             //Reading First line: Mother parameters
-            if(configLines!=null){
-                configLines.stream().forEach((line)->{
+            if (configLines != null) {
+                configLines.stream().forEach((line) -> {
                     Parameters.getNodeParameters(line);
-                
+
                 });
             }
 
@@ -32,8 +33,8 @@ public class Parameters {//All the directories and files needed for the software
             System.err.println("CONFIG FILE FAILURE.");
             Logger.getLogger(Parameters.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
-    
+    }
+
     private static void getNodeParameters(String msParamLine) {
         String[] motherParameters = null;
         String link = null;
@@ -42,20 +43,22 @@ public class Parameters {//All the directories and files needed for the software
         if (msParamLine != null && !msParamLine.isEmpty()) {
             motherParameters = msParamLine.split("\\t");
         }
-         /*
-             MOTHERLODE
-             [0] database link
-             [1] IP
-             [2] Linux Username
-             */
+        /*
+         MOTHERLODE
+         [0] database link
+         [1] IP
+         [2] Linux Username
+         */
         if (motherParameters != null && motherParameters.length == 3) {
             link = motherParameters[0];
             IP = motherParameters[1];
             linux = motherParameters[2];
             DB dbInfo = DBManager.getDbs().get(link);
-            dbInfo.setIP(IP);
-            dbInfo.setLinux_user(linux);
-            
+            if (dbInfo != null) {
+                dbInfo.setIP(IP);
+                dbInfo.setLinux_user(linux);
+            }
+
         } else {
             System.err.println("COULD NOT SET MOTHER PARAMETERS, USING DEFAULT");
         }
@@ -80,5 +83,4 @@ public class Parameters {//All the directories and files needed for the software
 //            dbInstance = myDBParameters[3];
 //        }
 //    }
-
 }
