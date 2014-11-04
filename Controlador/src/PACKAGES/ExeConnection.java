@@ -8,8 +8,12 @@ public class ExeConnection {
 
     //String output = this.executeCommand("scp " + logFullPath + " " + NARFDirs.motherUser + "@" + NARFDirs.motherIP + ":" + NARFDirs.motherLogs);
 
-    public static boolean sendFiles(String strategy) {
-
+    public static boolean sendFiles(String strategy,String destUser,String destIP) {
+        String rmanFile=ConstructorFiles.rutaRman+strategy+".rman";
+        String stratFile=ConstructorFiles.rutaStrategies+strategy+".txt";
+        String rmanOutput = ExeConnection.executeCommand("scp " + rmanFile+" "+destUser+"@"+destIP+":~/narf/executor/rman_scripts/");
+        System.out.println("RMAN SEND OUTPUT"+rmanOutput);
+        String stratOutput = ExeConnection.executeCommand("scp " + stratFile+" "+destUser+"@"+destIP+":~/narf/executor/strategies/");
         return true;
     }
 

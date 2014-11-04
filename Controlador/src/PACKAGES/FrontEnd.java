@@ -17,6 +17,7 @@ public class FrontEnd extends javax.swing.JFrame {
     public FrontEnd() {
         this.tbs = new DefaultListModel();
         DBManager.llenado();
+        Parameters.configureNodes();
         initComponents();
         tbs();
         this.setLocationRelativeTo(null);
@@ -507,7 +508,11 @@ public class FrontEnd extends javax.swing.JFrame {
             }
             //Create StrategyFile 
             ConstructorFiles.createStrategyFile(name, time, true);
-            //ExeConnection.metodoQueEnvia(name) //envia ambas cosas
+            DB dbinfo = DBManager.getDbs().get(db);
+            if(dbinfo!=null&&dbinfo.getIP()!=null&&dbinfo.getLinux_user()!=null)
+                ExeConnection.sendFiles(name,dbinfo.getLinux_user(),dbinfo.getIP()); //envia ambas cosas
+            else
+                System.err.println("ERROR SENDING");
         } else {
             //show error -> Do nothing
         }
