@@ -106,10 +106,10 @@ public class FolderChecker {
                         return false;
                     }
                     
-                    Predictor pr = new Predictor(values[1]);
-                    System.err.println("Next scheduled date " + pr.nextMatchingDate().toString());
-                    if(!values[3].equals("true"))
-                        System.err.println("INACTIVE STRATEGY");
+                    //Predictor pr = new Predictor(values[1]);
+                    //System.err.println("Next scheduled date " + pr.nextMatchingDate().toString());
+                    //if(!values[3].equals("true"))
+                       // System.err.println("INACTIVE STRATEGY");
                     return values[3].equals("true");//Finally returns if the strategy is valid by validating if its active.
                 } else {
                     System.err.println("INVALID CRON " + values[0]);

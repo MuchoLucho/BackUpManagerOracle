@@ -46,12 +46,12 @@ public class StrategyScheduler extends it.sauronsoftware.cron4j.Scheduler{
         StrategyScheduler.scheduler.stop();
         return true;
     }
-    public static boolean descheduleStrategy(Strategy str){
-        StrategyScheduler.scheduler.deschedule(str.getCronID());
-        str.setActive(false);
-        FolderChecker.deactivateStrategy(str);
-        return true;
-    }
+//    public static boolean descheduleStrategy(Strategy str){
+//        StrategyScheduler.scheduler.deschedule(str.getCronID());
+//        str.setActive(false);
+//        FolderChecker.deactivateStrategy(str);
+//        return true;
+//    }
 
     public static Strategy getStrategyFromName(String string) {
         return strategyMap.get(string);
