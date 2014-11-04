@@ -56,7 +56,7 @@ public class ConstructorFiles {
             }
     }
     
-    public static void RmanFull(String rman, String db, String tbs[])
+    public static void RmanFull(String rman, String db, String tbs[], boolean logfiles)
     {
         //rman : Nombre de la estrategia
         //DB : Base de datos a utilizar
@@ -74,6 +74,10 @@ public class ConstructorFiles {
                 //Tbs.substring(0, Tbs.length() - 1);
                 Tbs.delete(Tbs.length()-1, Tbs.length());
                 escribir2.write("backup tablespace "+ Tbs + "; \n");
+                if(logfiles)
+                {
+                    escribir2.write("BACKUP ARCHIVELOG ALL; \n");
+                }
                 escribir2.write("} \n");
             }
         } catch (Exception e) {
@@ -114,7 +118,7 @@ public class ConstructorFiles {
         DBManager d1 = new DBManager();
         String lis[] = {"users"};
         RmanIncremental("XE","pruebaIncremental", 0, true, true, lis);
-        RmanFull("pruebaFull","XE", lis);
+        RmanFull("pruebaFull","XE", lis, true);
         RmanWhole("pruebaTotal", "XE", true);
         try {
             //Process p = Runtime.getRuntime().exec("rman @pruebaIncremental.rman");
