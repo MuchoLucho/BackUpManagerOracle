@@ -5,6 +5,7 @@ import static PACKAGES.ConstructorFiles.RmanIncremental;
 import static PACKAGES.ConstructorFiles.RmanWhole;
 import static PACKAGES.DBManager.getNameFromDB;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.stream.Collectors;
 import javax.swing.AbstractButton;
@@ -215,7 +216,7 @@ public class FrontEnd extends javax.swing.JFrame {
 
         note_lbl.setText("*Press Ctrl+Click to add more than one TBs");
 
-        createStrategy_btn.setText("Create Stragedy");
+        createStrategy_btn.setText("Create Strategy");
         createStrategy_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createStrategy_btnActionPerformed(evt);
@@ -498,14 +499,15 @@ public class FrontEnd extends javax.swing.JFrame {
                             RmanIncremental(getNameFromDB(db), name, getLevel(), logfiles, control_chk.isSelected(), (String[]) tablespaces_lst.getSelectedValuesList().toArray());
                             break;
                         case "Full BackUp":
-                            RmanFull(name, getNameFromDB(db), (String[]) tablespaces_lst.getSelectedValuesList().toArray(), logfiles);
+                            Object[] aux = tablespaces_lst.getSelectedValuesList().toArray();
+                            RmanFull(name, getNameFromDB(db), Arrays.copyOf(aux, aux.length, String[].class) , logfiles);
                             break;
                     }
                 }
             }
             //Create StrategyFile 
-            ConstructorFiles.createStrategyFile(name, date_txt.getText(), true);
-            //ExeConnection.metodoQueEnvia(estrategia) //envia ambas cosas
+            ConstructorFiles.createStrategyFile(name, time, true);
+            //ExeConnection.metodoQueEnvia(name) //envia ambas cosas
         } else {
             //show error -> Do nothing
         }

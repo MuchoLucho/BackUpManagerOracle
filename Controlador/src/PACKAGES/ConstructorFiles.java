@@ -73,7 +73,7 @@ public class ConstructorFiles {
                 escribir2.write("connect catalog rmanuser/rmanuser@" + db + " \n");
                 escribir2.write("run { \n");
                 for (String tb : tbs) {
-                    Tbs.append(tb).append(", ");
+                    Tbs.append(tb).append(",");
                 }
                 //Tbs.substring(0, Tbs.length() - 1);
                 Tbs.delete(Tbs.length() - 1, Tbs.length());

@@ -6,6 +6,11 @@ import java.io.InputStreamReader;
 
 public class ExeConnection {
 
+    public static boolean sendFiles(String strategy) {
+
+        return true;
+    }
+
     public static String executeCommand(String command) {
         StringBuilder output = new StringBuilder();
         Process p;

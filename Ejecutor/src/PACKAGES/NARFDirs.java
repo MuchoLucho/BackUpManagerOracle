@@ -1,23 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PACKAGES;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author jota
- */
 public class NARFDirs {//All the directories and files needed for the software to work. Files must always end with /
 
     public static final String home = System.getProperty("user.home");
@@ -60,9 +50,7 @@ public class NARFDirs {//All the directories and files needed for the software t
             NARFDirs.motherIP = mIP;
         }
 
-    }
-
-    
+    }    
     
     private static void setMotherShipParameters(String msParamLine) {
         String[] motherParameters = null;

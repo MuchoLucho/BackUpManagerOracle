@@ -404,7 +404,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="createStrategy_btn">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Create Stragedy"/>
+                    <Property name="text" type="java.lang.String" value="Create Strategy"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createStrategy_btnActionPerformed"/>
