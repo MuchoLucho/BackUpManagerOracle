@@ -429,9 +429,9 @@
                                   <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                                   <Component id="databases_cmb" min="-2" pref="272" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
-                                  <Component id="archive_rnd" min="-2" max="-2" attributes="0"/>
+                                  <Component id="archive_chk" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="control_rnd" min="-2" max="-2" attributes="0"/>
+                                  <Component id="control_chk" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace pref="234" max="32767" attributes="0"/>
@@ -449,8 +449,8 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="databases_cmb" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="archive_rnd" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="control_rnd" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="archive_chk" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="control_chk" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -479,12 +479,12 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="databases_cmbActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="control_rnd">
+                <Component class="javax.swing.JCheckBox" name="control_chk">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Control Files"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="archive_rnd">
+                <Component class="javax.swing.JCheckBox" name="archive_chk">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="ArchiveLogs"/>
                   </Properties>

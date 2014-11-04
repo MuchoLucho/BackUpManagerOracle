@@ -1,5 +1,8 @@
 package PACKAGES;
 
+import static PACKAGES.ConstructorFiles.RmanIncremental;
+import static PACKAGES.ConstructorFiles.RmanWhole;
+import static PACKAGES.DBManager.getNameFromDB;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.stream.Collectors;
@@ -51,8 +54,8 @@ public class FrontEnd extends javax.swing.JFrame {
         jPanel11 = new javax.swing.JPanel();
         database_lbl = new javax.swing.JLabel();
         databases_cmb = new javax.swing.JComboBox();
-        control_rnd = new javax.swing.JCheckBox();
-        archive_rnd = new javax.swing.JCheckBox();
+        control_chk = new javax.swing.JCheckBox();
+        archive_chk = new javax.swing.JCheckBox();
         include_lbl = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -280,9 +283,9 @@ public class FrontEnd extends javax.swing.JFrame {
             }
         });
 
-        control_rnd.setText("Control Files");
+        control_chk.setText("Control Files");
 
-        archive_rnd.setText("ArchiveLogs");
+        archive_chk.setText("ArchiveLogs");
 
         include_lbl.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
         include_lbl.setForeground(new java.awt.Color(0, 0, 0));
@@ -303,9 +306,9 @@ public class FrontEnd extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addComponent(databases_cmb, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(119, 119, 119)
-                        .addComponent(archive_rnd)
+                        .addComponent(archive_chk)
                         .addGap(18, 18, 18)
-                        .addComponent(control_rnd)))
+                        .addComponent(control_chk)))
                 .addContainerGap(234, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
@@ -318,8 +321,8 @@ public class FrontEnd extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(databases_cmb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(archive_rnd)
-                    .addComponent(control_rnd))
+                    .addComponent(archive_chk)
+                    .addComponent(control_chk))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -476,10 +479,49 @@ public class FrontEnd extends javax.swing.JFrame {
     }//GEN-LAST:event_databases_cmbActionPerformed
 
     private void createStragedy() {
-        tablespaces_lst.getSelectedValuesList();
         String name = stragedy_txt.getText();
-        String db = (String) databases_cmb.getModel().getSelectedItem();
-        String time = date_txt.getText();
+        if (1 == 1) {//Not exist previously (use name above)
+            //Global between types
+            String db = (String) databases_cmb.getModel().getSelectedItem();
+            String time = date_txt.getText();
+            boolean logfiles = archive_chk.isSelected();
+            //Create RmanFile
+            for (Enumeration<AbstractButton> buttons = modes_group.getElements(); buttons.hasMoreElements();) {
+                AbstractButton button = buttons.nextElement();
+                if (button.isSelected()) {
+                    switch (button.getText()) {
+                        case "Whole BackUp":
+                            RmanWhole(name, getNameFromDB(db), logfiles);
+                            break;
+                        case "Incremental BackUp":
+                            RmanIncremental(getNameFromDB(db), name, getLevel(), logfiles, control_chk.isSelected(), (String[]) tablespaces_lst.getSelectedValuesList().toArray());
+                            break;
+                        case "Full BackUp":
+                            //RmanFull(String rman, String db, String tbs[])
+                            break;
+                    }
+                }
+            }
+            //Create StrategyFile   
+
+        } else {
+            //show error -> Do nothing
+        }
+    }
+
+    private int getLevel() {
+        for (Enumeration<AbstractButton> buttons = incLevel_group.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                switch (button.getText()) {
+                    case "1":
+                        return 1;
+                    case "0":
+                        return 1;
+                }
+            }
+        }
+        return -1;
     }
 
     private void mode_change(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mode_change
@@ -488,8 +530,8 @@ public class FrontEnd extends javax.swing.JFrame {
             if (button.isSelected()) {
                 switch (button.getText()) {
                     case "Whole BackUp":
-                        control_rnd.setSelected(true);
-                        control_rnd.setEnabled(false);
+                        control_chk.setSelected(true);
+                        control_chk.setEnabled(false);
                         note_lbl.setEnabled(false);
                         tablespace_lbl.setEnabled(false);
                         tablespaces_lst.setSelectionInterval(0, tbs.getSize());
@@ -499,7 +541,7 @@ public class FrontEnd extends javax.swing.JFrame {
                         lvl_1_rnd.setEnabled(false);
                         break;
                     case "Incremental BackUp":
-                        control_rnd.setEnabled(true);
+                        control_chk.setEnabled(true);
                         note_lbl.setEnabled(true);
                         tablespace_lbl.setEnabled(true);
                         tablespaces_lst.setSelectedIndex(0);
@@ -509,7 +551,7 @@ public class FrontEnd extends javax.swing.JFrame {
                         lvl_1_rnd.setEnabled(true);
                         break;
                     case "Full BackUp":
-                        control_rnd.setEnabled(true);
+                        control_chk.setEnabled(true);
                         note_lbl.setEnabled(true);
                         tablespace_lbl.setEnabled(true);
                         tablespaces_lst.setSelectedIndex(0);
@@ -546,9 +588,9 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.table.TableModel tabla;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addEvt_btn;
-    private javax.swing.JCheckBox archive_rnd;
+    private javax.swing.JCheckBox archive_chk;
     private javax.swing.JLabel banner_lbl;
-    private javax.swing.JCheckBox control_rnd;
+    private javax.swing.JCheckBox control_chk;
     private javax.swing.JButton createStrategy_btn;
     private javax.swing.JLabel database_lbl;
     private javax.swing.JComboBox databases_cmb;

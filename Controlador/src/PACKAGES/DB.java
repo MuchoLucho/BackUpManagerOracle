@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class DB implements Serializable {
 
-    public DB(String link_name, String host, ArrayList<String> tbs) {
+    public DB(String link_name, String db_name, ArrayList<String> tbs) {
         this.link_name = link_name;
-        this.host = host;
+        this.db_name = db_name;
         this.tablespaces = tbs;
     }
 
@@ -16,7 +16,7 @@ public class DB implements Serializable {
     }
 
     public String getHost() {
-        return host;
+        return db_name;
     }
 
     public ArrayList<String> getTablespaces() {
@@ -24,6 +24,6 @@ public class DB implements Serializable {
     }   
     
     private final String link_name;
-    private final String host;
+    private final String db_name;
     private final ArrayList<String> tablespaces;
 }
