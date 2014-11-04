@@ -7,13 +7,12 @@ import java.io.InputStreamReader;
 public class ExeConnection {
 
     //String output = this.executeCommand("scp " + logFullPath + " " + NARFDirs.motherUser + "@" + NARFDirs.motherIP + ":" + NARFDirs.motherLogs);
-
-    public static boolean sendFiles(String strategy,String destUser,String destIP) {
-        String rmanFile=ConstructorFiles.rutaRman+strategy+".rman";
-        String stratFile=ConstructorFiles.rutaStrategies+strategy+".txt";
-        String rmanOutput = ExeConnection.executeCommand("scp " + rmanFile+" "+destUser+"@"+destIP+":~/narf/executor/rman_scripts/");
-        System.out.println("RMAN SEND OUTPUT"+rmanOutput);
-        String stratOutput = ExeConnection.executeCommand("scp " + stratFile+" "+destUser+"@"+destIP+":~/narf/executor/strategies/");
+    public static boolean sendFiles(String strategy, String destUser, String destIP) {
+        String rmanFile = ConstructorFiles.rutaRman + strategy + ".rman";
+        String stratFile = ConstructorFiles.rutaStrategies + strategy + ".txt";
+        String rmanOutput = ExeConnection.executeCommand("scp " + rmanFile + " " + destUser + "@" + destIP + ":~/narf/executor/rman_scripts/");
+        System.out.println("RMAN SEND OUTPUT" + rmanOutput);
+        String stratOutput = ExeConnection.executeCommand("scp " + stratFile + " " + destUser + "@" + destIP + ":~/narf/executor/strategies/");
         return true;
     }
 
@@ -34,7 +33,4 @@ public class ExeConnection {
         return output.toString();
     }
 
-    public static void main(String[] args) {
-        executeCommand("scp Contructor.class.violet.html jota@192.168.1.107:~");
-    }
 }

@@ -16,12 +16,16 @@ import javax.swing.JOptionPane;
 public class FrontEnd extends javax.swing.JFrame {
 
     public FrontEnd() {
+        Loading l = new Loading();
+        l.setVisible(true);
         this.tbs = new DefaultListModel();
         DBManager.llenado();
         Parameters.configureNodes();
         initComponents();
         tbs();
         this.setLocationRelativeTo(null);
+        l.setVisible(false);
+        l.dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -68,6 +72,8 @@ public class FrontEnd extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         filter_txt = new javax.swing.JTextField();
         filter_btn = new javax.swing.JButton();
+        delete_txt = new javax.swing.JTextField();
+        delete_btn = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -385,12 +391,23 @@ public class FrontEnd extends javax.swing.JFrame {
             }
         });
 
+        delete_btn.setText("Disable strategy");
+        delete_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_btnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap(581, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(delete_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(delete_btn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 238, Short.MAX_VALUE)
                 .addComponent(filter_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(filter_btn))
@@ -400,8 +417,11 @@ public class FrontEnd extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filter_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(filter_btn))
-                .addGap(0, 9, Short.MAX_VALUE))
+                    .addComponent(filter_btn)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(delete_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(delete_btn)))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -490,7 +510,7 @@ public class FrontEnd extends javax.swing.JFrame {
 
     private void createStragedy() {
         String name = stragedy_txt.getText();
-        if (1 == 1) {//Not exist previously (use name above)
+        if (Manager.readFiles(name).isEmpty()) {//Not exist previously (use name above)
             //Global between types
             String db = (String) databases_cmb.getModel().getSelectedItem();
             String time = date_txt.getText();
@@ -525,23 +545,25 @@ public class FrontEnd extends javax.swing.JFrame {
                 System.err.println("ERROR SENDING");
             }
         } else {
-            //show error -> Do nothing
+            JOptionPane.showMessageDialog(null, name, "The name for your strategy is already taken, select another name and try again", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private int getLevel() {
-        for (Enumeration<AbstractButton> buttons = incLevel_group.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            if (button.isSelected()) {
-                switch (button.getText()) {
-                    case "1":
-                        return 1;
-                    case "0":
-                        return 1;
-                }
-            }
+        if (lvl_0_rnd.isSelected()) {
+            return 0;
         }
-        return -1;
+        return 1;
+    }
+
+    private void limpiarCampos() {
+        stragedy_txt.setText("");
+        date_txt.setText("");
+        archive_chk.setSelected(false);
+        control_chk.setSelected(false);
+        databases_cmb.setSelectedIndex(0);
+        full_rnd.setSelected(true);
+        tbs();
     }
 
     private void mode_change(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mode_change
@@ -554,7 +576,7 @@ public class FrontEnd extends javax.swing.JFrame {
                         control_chk.setEnabled(false);
                         note_lbl.setEnabled(false);
                         tablespace_lbl.setEnabled(false);
-                        tablespaces_lst.setSelectionInterval(0, tbs.getSize()-1);
+                        tablespaces_lst.setSelectionInterval(0, tbs.getSize() - 1);
                         tablespaces_lst.setEnabled(false);
                         level_lbl.setEnabled(false);
                         lvl_0_rnd.setEnabled(false);
@@ -586,12 +608,36 @@ public class FrontEnd extends javax.swing.JFrame {
     }//GEN-LAST:event_mode_change
 
     private void createStrategy_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createStrategy_btnActionPerformed
-        createStragedy();
+        if (stragedy_txt.getText().equals("") || date_txt.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "You must digit a name for the strategy and set the time for execution", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            createStragedy();
+            JOptionPane.showMessageDialog(null, "Strategy " + stragedy_txt.getText() + " Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
+        }
     }//GEN-LAST:event_createStrategy_btnActionPerformed
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         Manager.filter("\t");
     }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btnActionPerformed
+        String[] aux = Manager.changeFile(delete_txt.getText());
+        if (aux != null) {
+            ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[2], false);
+            DB dbinfo = DBManager.getDbs().get(aux[4]);
+            if (dbinfo != null && dbinfo.getIP() != null && dbinfo.getLinux_user() != null) {
+                if(ExeConnection.sendFiles(aux[0], dbinfo.getLinux_user(), dbinfo.getIP())){
+                    JOptionPane.showMessageDialog(null, "Success disabling the strategy", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    Manager.filter("\t");
+                } //envia ambas cosas
+            } else {
+                System.err.println("ERROR SENDING");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, evt, "There is not any strategy called " + delete_txt.getText() + " and marked as active", WIDTH);
+        }
+    }//GEN-LAST:event_delete_btnActionPerformed
 
     public javax.swing.ComboBoxModel databases() {
         java.util.ArrayList<String> vect = (ArrayList<String>) DBManager.getDbs().values().stream().map((x) -> x.getLink_name()).collect(Collectors.toList());
@@ -619,6 +665,8 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JLabel database_lbl;
     private javax.swing.JComboBox databases_cmb;
     private javax.swing.JTextField date_txt;
+    private javax.swing.JButton delete_btn;
+    private javax.swing.JTextField delete_txt;
     private javax.swing.JButton delteEvt_btn;
     private javax.swing.JButton filter_btn;
     private javax.swing.JTextField filter_txt;
