@@ -1,10 +1,7 @@
 package PACKAGES;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class ConstructorFiles {
 
@@ -109,28 +106,6 @@ public class ConstructorFiles {
                 escribir3.write("} \n");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        DBManager d1 = new DBManager();
-        String lis[] = {"users"};
-        RmanIncremental("XE", "pruebaIncremental", 0, true, true, lis);
-        RmanFull("pruebaFull", "XE", lis, true);
-        RmanWhole("pruebaTotal", "XE", true);
-        try {
-            Process p = Runtime.getRuntime().exec("rman @" + rutaRman + "pruebaTotal.rman");
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                if (line.contains("RMAN") || line.contains("ORA")) {
-                    //System.out.println("ERROR ");
-                    //return false;
-                }
-                System.out.println(line);
-            }
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }

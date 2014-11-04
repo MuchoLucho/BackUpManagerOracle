@@ -488,6 +488,7 @@ public class FrontEnd extends javax.swing.JFrame {
             String db = (String) databases_cmb.getModel().getSelectedItem();
             String time = date_txt.getText();
             boolean logfiles = archive_chk.isSelected();
+            Object[] aux = tablespaces_lst.getSelectedValuesList().toArray();
             //Create RmanFile
             for (Enumeration<AbstractButton> buttons = modes_group.getElements(); buttons.hasMoreElements();) {
                 AbstractButton button = buttons.nextElement();
@@ -497,11 +498,10 @@ public class FrontEnd extends javax.swing.JFrame {
                             RmanWhole(name, getNameFromDB(db), logfiles);
                             break;
                         case "Incremental BackUp":
-                            RmanIncremental(getNameFromDB(db), name, getLevel(), logfiles, control_chk.isSelected(), (String[]) tablespaces_lst.getSelectedValuesList().toArray());
+                            RmanIncremental(getNameFromDB(db), name, getLevel(), logfiles, control_chk.isSelected(), Arrays.copyOf(aux, aux.length, String[].class));
                             break;
                         case "Full BackUp":
-                            Object[] aux = tablespaces_lst.getSelectedValuesList().toArray();
-                            RmanFull(name, getNameFromDB(db), Arrays.copyOf(aux, aux.length, String[].class) , logfiles);
+                            RmanFull(name, getNameFromDB(db), Arrays.copyOf(aux, aux.length, String[].class), logfiles);
                             break;
                     }
                 }
@@ -509,10 +509,11 @@ public class FrontEnd extends javax.swing.JFrame {
             //Create StrategyFile 
             ConstructorFiles.createStrategyFile(name, time, true);
             DB dbinfo = DBManager.getDbs().get(db);
-            if(dbinfo!=null&&dbinfo.getIP()!=null&&dbinfo.getLinux_user()!=null)
-                ExeConnection.sendFiles(name,dbinfo.getLinux_user(),dbinfo.getIP()); //envia ambas cosas
-            else
+            if (dbinfo != null && dbinfo.getIP() != null && dbinfo.getLinux_user() != null) {
+                ExeConnection.sendFiles(name, dbinfo.getLinux_user(), dbinfo.getIP()); //envia ambas cosas
+            } else {
                 System.err.println("ERROR SENDING");
+            }
         } else {
             //show error -> Do nothing
         }
