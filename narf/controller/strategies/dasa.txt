@@ -1,0 +1,1 @@
+dasa	1 1 * * 5	dasa.rman	true	LUIS

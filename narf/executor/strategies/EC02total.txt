@@ -1,0 +1,1 @@
+EC0012	*/10 * * * *	totalBackup.rman	false	XE

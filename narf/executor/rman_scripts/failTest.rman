@@ -1,0 +1,5 @@
+connect target rmanuser/rmanuser@XE 
+connect catalog rmanuser/rmanuser@XE 
+run { 
+backup current dasdas; 
+} 

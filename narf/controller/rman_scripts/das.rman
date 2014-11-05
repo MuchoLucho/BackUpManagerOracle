@@ -1,0 +1,5 @@
+connect target rmanuser/rmanuser@BD1 
+connect catalog rmanuser/rmanuser@BD1 
+run { 
+BACKUP AS BACKUPSET DATABASEbackup current controlfile; 
+} 

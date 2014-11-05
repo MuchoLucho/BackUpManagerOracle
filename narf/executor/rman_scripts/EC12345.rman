@@ -1,0 +1,7 @@
+connect target rmanuser/rmanuser@localhost 
+connect catalog rmanuser/rmanuser@localhost 
+run { 
+allocate channel c1 type disk; 
+backup incremental level 1 tablespace SYSTEM plus archivelog; 
+release channel c1; 
+} 

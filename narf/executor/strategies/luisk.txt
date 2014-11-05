@@ -1,0 +1,1 @@
+luisk	0 */1 * * *	luisk.rman	true	JOTA
