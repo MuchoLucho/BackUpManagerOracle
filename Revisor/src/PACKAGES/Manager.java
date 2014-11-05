@@ -2,10 +2,7 @@ package PACKAGES;
 
 import javax.swing.table.DefaultTableModel;
 
-
 /*TODO: HACER UN AUTOSORT EN LOS HEADERS DE LAS COLUMNAS */
-
-
 public class Manager {
 
     public static Object[][] table;
@@ -18,14 +15,14 @@ public class Manager {
     public static DefaultTableModel tm = new DefaultTableModel(
             Manager.getTable("\t"),
             new String[]{
-                "Strategy", "Database", "Date", "Hour", "Success"
+                "Strategy", "Database", "Date", "Hour", "Success", "Rman Output"
             }
     ) {
         Class[] types = new Class[]{
-            java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
         };
         boolean[] canEdit = new boolean[]{
-            false, false, false, false, false
+            false, false, false, false, false, false
         };
 
         @Override
@@ -40,7 +37,7 @@ public class Manager {
     };
 
     public static void filter(String str) {
-        tm.setDataVector(Manager.getTable(str), new String[]{"Strategy", "Database", "Date", "Hour", "Success"});
+        tm.setDataVector(Manager.getTable(str), new String[]{"Strategy", "Database", "Date", "Hour", "Success", "Rman Output"});
     }
 
     public static void main(String args[]) {

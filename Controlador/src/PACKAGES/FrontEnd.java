@@ -16,8 +16,6 @@ import javax.swing.JOptionPane;
 public class FrontEnd extends javax.swing.JFrame {
 
     public FrontEnd() {
-        Loading l = new Loading();
-        l.setVisible(true);
         this.tbs = new DefaultListModel();
         DBManager.llenado();
         Parameters.configureNodes();
@@ -25,8 +23,6 @@ public class FrontEnd extends javax.swing.JFrame {
         initComponents();
         tbs();
         this.setLocationRelativeTo(null);
-        l.setVisible(false);
-        l.dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -416,12 +412,13 @@ public class FrontEnd extends javax.swing.JFrame {
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(filter_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(filter_btn)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(delete_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(delete_btn)))
+                        .addComponent(delete_btn))
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(filter_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(filter_btn)))
                 .addGap(0, 16, Short.MAX_VALUE))
         );
 

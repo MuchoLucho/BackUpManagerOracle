@@ -44,7 +44,7 @@ public class Reader {
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
-            filesInFolder = Files.walk(Paths.get(System.getProperty("user.home") + "/narf/revisor/logs"))
+            filesInFolder = Files.walk(Paths.get(System.getProperty("user.home") + logs))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
@@ -53,4 +53,7 @@ public class Reader {
         }
         return filesInFolder;
     }
+
+    private static final String logs = "/narf/revisor/logs";
+    
 }

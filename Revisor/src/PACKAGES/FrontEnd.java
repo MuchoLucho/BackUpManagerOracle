@@ -4,6 +4,7 @@ public class FrontEnd extends javax.swing.JFrame {
 
     public FrontEnd() {
         initComponents();
+        table.setAutoCreateRowSorter(true);
         this.setLocationRelativeTo(null);
     }
 
@@ -22,6 +23,7 @@ public class FrontEnd extends javax.swing.JFrame {
         table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Revisor");
         setResizable(false);
 
         banner_lbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/banner.png"))); // NOI18N
@@ -95,6 +97,11 @@ public class FrontEnd extends javax.swing.JFrame {
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         table.setModel(PACKAGES.Manager.tm);
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(table);
 
         getContentPane().add(jScrollPane3, java.awt.BorderLayout.CENTER);
@@ -114,6 +121,16 @@ public class FrontEnd extends javax.swing.JFrame {
             Manager.filter("\t");
         }
     }//GEN-LAST:event_filter_btnActionPerformed
+
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        if (evt.getClickCount() == 2) {
+            javax.swing.JTable target = (javax.swing.JTable) evt.getSource();
+            int row = target.getSelectedRow();
+            System.out.print(table.getModel().getValueAt(row, 4));
+            //int column = target.getSelectedColumn();
+            //System.out.println(row + "" + column);
+        }
+    }//GEN-LAST:event_tableMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel banner_lbl;
