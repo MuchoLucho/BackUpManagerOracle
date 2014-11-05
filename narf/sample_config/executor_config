@@ -1,0 +1,7 @@
+#FIRST LINE:
+MOTHERLINK	IP ADDRESS	LINUX USER
+#SECOND LINE:
+USER	PASS	LINK	DATABASE
+#note: ip is defaulted as localhost
+luisk	192.168.1.104	luisk
+sys as sysdba	root	1521	XE

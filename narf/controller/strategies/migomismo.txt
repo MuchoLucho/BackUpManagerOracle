@@ -1,0 +1,1 @@
+migomismo	0 */1 * * 1	migomismo.rman	true	Local

@@ -1,0 +1,8 @@
+connect target rmanuser/rmanuser@XE 
+connect catalog rmanuser/rmanuser@XE 
+run { 
+allocate channel c1 type disk; 
+backup incremental level 1 tablespace USERS ; 
+backup current controlfile; 
+release channel c1; 
+} 

@@ -1,0 +1,1 @@
+EC0012	* * * * *	controlfile.rman	false	XE

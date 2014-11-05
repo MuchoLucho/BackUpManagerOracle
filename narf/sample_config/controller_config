@@ -1,0 +1,7 @@
+#THIS IS A SAMPLE FILE FRO CONTROLLER CONFIG FILE
+#note: the true file does not support comments
+#fields must be separed by tab spaces (\t)
+dblink	IP ADDRESS 	LINUX USER	
+luisra	192.168.1.105	luis
+jota	localhost	jota
+luiska	192.168.1.105	luisk

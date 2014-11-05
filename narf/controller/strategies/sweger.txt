@@ -1,0 +1,1 @@
+sweger	1 1 * * 0	sweger.rman	true	Local
