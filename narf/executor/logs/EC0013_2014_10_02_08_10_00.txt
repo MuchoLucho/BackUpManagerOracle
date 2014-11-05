@@ -1,8 +1,0 @@
---------SAMPLE LOG FOR STRATEGY EC0013--------
-Date: Sun Nov 02 20:10:00 CST 2014
-Rman command: THIS IS A DIFFERENT STRATEGY
-The strategy was successful
-Next 3 executions scheduled: 
-Sun Nov 02 20:11:00 CST 2014
-Sun Nov 02 20:12:00 CST 2014
-Sun Nov 02 20:13:00 CST 2014

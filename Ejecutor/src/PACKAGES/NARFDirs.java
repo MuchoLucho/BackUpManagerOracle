@@ -13,7 +13,8 @@ public class NARFDirs {//All the directories and files needed for the software t
     public static final String home = System.getProperty("user.home");
     public static final String strats = home + "/narf/executor/strategies/";
     public static final String scripts = home + "/narf/executor/rman_scripts/";
-    public static final String logs = home + "/narf/revisor/logs/";
+    public static final String local_logs = home + "/narf/executor/local_logs/logs/";
+    public static final String local_outputs = home + "/narf/executor/local_logs/outputs/";
     public static final String backups = home + "/narf/executor/backup_files/";
     public static final String configFile = home + "/narf/executor/config";
 
@@ -22,6 +23,7 @@ public class NARFDirs {//All the directories and files needed for the software t
     public static String motherUser = "luisk";
     public static String motherIP = "127.0.0.1";
     public static String motherLogs = "~/narf/revisor/logs/";//never changes
+     public static String motherOutputs = "~/narf/revisor/outputs/";//never changes
 
     /*MY DB*/
     public static String dbusername = "sys as sysdba";

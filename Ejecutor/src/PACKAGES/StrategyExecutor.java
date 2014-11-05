@@ -38,27 +38,35 @@ public class StrategyExecutor {
 
     }
 
-    public boolean executeRMANFile(String rmanString) {//Parameter is name of file in the 
+    public String executeRMANFile(String rmanString) {//Parameter is name of file in the 
         String oracle_home = System.getenv("ORACLE_HOME");
         String rmanOutput = this.executeCommand(oracle_home + "/bin/rman @" + NARFDirs.scripts + rmanString);
-        return this.successfulStrategy(rmanOutput);
+        return rmanOutput;
     }
 
     public boolean sendResultLog(String logName) {//Success/fail test pending
-        String logFullPath = NARFDirs.logs + logName;
+        String logFullPath = NARFDirs.local_logs + logName;
         System.err.println("Trying to send logs to: " + "scp " + logFullPath + " " + NARFDirs.motherUser + "@" + NARFDirs.motherIP + ":" + NARFDirs.motherLogs);
         String output = this.executeCommand("scp " + logFullPath + " " + NARFDirs.motherUser + "@" + NARFDirs.motherIP + ":" + NARFDirs.motherLogs);
         System.err.println(output);
         return !output.contains("fail");
     }
 
-    private boolean successfulStrategy(String rmanOutput) {
+    public boolean successfulStrategy(String rmanOutput) {
         System.out.println(rmanOutput);
         if (rmanOutput != null && !rmanOutput.isEmpty()) {
             return !((rmanOutput.contains("ORA-") && rmanOutput.contains("RMAN-")) || rmanOutput.contains("ERROR") || rmanOutput.contains("fail"));
         }
         return false;
 
+    }
+
+    public boolean sendResultOutput(String rmanOutput) {
+        String outputFullPath = NARFDirs.local_outputs + rmanOutput;
+        System.err.println("Trying to send logs to: " + "scp " + outputFullPath + " " + NARFDirs.motherUser + "@" + NARFDirs.motherIP + ":" + NARFDirs.motherOutputs);
+        String output = this.executeCommand("scp " + outputFullPath + " " + NARFDirs.motherUser + "@" + NARFDirs.motherIP + ":" + NARFDirs.motherLogs);
+        System.err.println(output);
+        return !output.contains("fail");
     }
 
 }
