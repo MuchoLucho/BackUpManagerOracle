@@ -64,7 +64,7 @@ public class Manager {
                     Thread.sleep(5000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }   
             }
             System.err.println("THE THREAD HAS EXITED");
             StrategyScheduler.stopScheduler();
@@ -88,6 +88,14 @@ public class Manager {
     }
 
     public static void main(String[] args) {
+         System.out.println("--------------------------------------------------------------------");
+        System.out.println("---------------NARF STRATEGY EXECUTOR FOR ORACLE--------------------");
+        System.out.println("--------------------------------------------------------------------");
+        System.out.println("*****Developed by students of the National University of Costa Rica (UNA)");
+        System.out.println("*****Javier Porras,Luis Ramirez,Luis Segura");
+        System.out.println("*****NARF Inc. 2014");
+        System.out.println("--------------------------------------------------------------------");
+        
         NARFDirs.setParameters();
         boolean schedStarted = StrategyScheduler.startScheduler();
         if (schedStarted) {
@@ -100,8 +108,10 @@ public class Manager {
         String input="";
         while (!finished) {
             input = JOptionPane.showInputDialog("EXECUTOR is running. Type exit to terminate it. ");
-            finished = input.toLowerCase().equals("exit");
+            if(input!=null)
+                finished = input.toLowerCase().equals("exit");
         }
         finished = true;
+        System.err.println("---------END---------");
     }
 }

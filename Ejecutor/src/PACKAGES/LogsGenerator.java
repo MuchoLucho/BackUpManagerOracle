@@ -15,14 +15,15 @@ import java.util.logging.Logger;
 
 public class LogsGenerator {
 
-    //private static String NARFDirs.logs = System.getProperty("user.home") + "/narf/executor/logs/";
-    private static String extension = ".txt";
+    //private static String NARFDirs.localLogs = System.getProperty("user.home") + "/narf/executor/logs/";
+    private static String logExtension = ".log";
+    private static String rmanOutExtension = ".out";
 
     public static String generateSampleLog(boolean success, Date date, Strategy str) {
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy_mm_dd_hh_mm_ss");
         Predictor predictor = new Predictor(str.getCronString());
-        String filename = str.getName() + "_" + dateformat.format(date)+extension;
-        String fullDirectory = new StringBuilder(NARFDirs.logs).append(filename).toString();
+        String filename = str.getName() + "_" + dateformat.format(date)+logExtension;
+        String fullDirectory = new StringBuilder(NARFDirs.local_logs).append(filename).toString();
         File f = new File(fullDirectory);
         //f.mkdirs();
         try {
@@ -47,8 +48,9 @@ public class LogsGenerator {
         SimpleDateFormat onlyHour = new SimpleDateFormat("hh:mm");
         SimpleDateFormat onlyDate = new SimpleDateFormat("dd/mm/yyyy");
         Predictor predictor = new Predictor(str.getCronString());
-        String filename = str.getName() + "_" + dateformat.format(date)+extension;
-        String fullDirectory = new StringBuilder(NARFDirs.logs).append(filename).toString();
+        String fileFormat = str.getName() + "_" + dateformat.format(date);
+        String filename = fileFormat+logExtension;
+        String fullDirectory = new StringBuilder(NARFDirs.local_logs).append(filename).toString();
         File f = new File(fullDirectory);
         //f.mkdirs();
         try {
@@ -58,6 +60,7 @@ public class LogsGenerator {
             writer.print(onlyDate.format(date) + "\t");
             writer.print(onlyHour.format(date) + "\t");
             writer.print((success) ? "true" : "false");
+            writer.print(fileFormat+rmanOutExtension);
             writer.print("\n");
             writer.close();
         } catch (IOException ex) {
@@ -67,7 +70,7 @@ public class LogsGenerator {
     }
 
     public static String getLogDirectory() {
-        return NARFDirs.logs;
+        return NARFDirs.local_logs;
     }
 
     public static SchedulerListener generateListener() {
@@ -88,4 +91,19 @@ public class LogsGenerator {
         };
         return listener;
     }
+
+    public static String writeRMANOutput(String rmanOutput,String filename) {
+        String newFilename = filename.replace(logExtension,rmanOutExtension);
+        String fullDirectory = new StringBuilder(NARFDirs.local_outputs).append(newFilename).toString();
+        File f = new File(fullDirectory);
+        try {
+            PrintWriter writer = new PrintWriter(f);
+            writer.print(rmanOutput);
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LogsGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return newFilename;
+    }
 }
+    

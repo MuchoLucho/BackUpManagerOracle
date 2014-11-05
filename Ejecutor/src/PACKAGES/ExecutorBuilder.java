@@ -15,10 +15,13 @@ public class ExecutorBuilder{
        return ()->{
            System.err.println("*********RUNNING THE"+str.getName()+" STRATEGY***********");
            StrategyExecutor exe = new StrategyExecutor();
-           boolean success = exe.executeRMANFile(str.getRmanString());
+           String rmanOutput = exe.executeRMANFile(str.getRmanString());
+           boolean success = exe.successfulStrategy(rmanOutput);
            System.out.println("EXECUTION OF RMAN SCRIPT : "+ str.getRmanString()+" "+((success)?"SUCCEEDED":"FAILED"));
-           String logFile = LogsGenerator.generateLog(success,new Date(), str);
+           String logFile = LogsGenerator.generateLog(success,new Date(), str);//Danger: it writes the expected (but not yet existing rman output file)
+           String outputFile = LogsGenerator.writeRMANOutput(rmanOutput,logFile);
            boolean logSent = exe.sendResultLog(logFile);
+           boolean outPutSent = exe.sendResultOutput(outputFile);
            if(!logSent){
                System.err.println("***FAILURE SENDING LOGFILE "+logFile+" to mothership!!!");
            }
