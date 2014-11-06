@@ -17,12 +17,15 @@ public class DBManager {
         String sql;
         sql = "select tablespace_name \"TS\" from user_tablespaces";
         ArrayList<String> TS = new ArrayList();
+        String ts;
         try {
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();
             while (rs.next()) {
-                String ts = rs.getString("TS");
-                TS.add(ts);
+                ts = rs.getString("TS");
+                if (!ts.equals("TEMP")) {
+                    TS.add(ts);
+                }
             }
         } catch (SQLException ex) {
         }
@@ -36,12 +39,15 @@ public class DBManager {
         String sql;
         sql = "select tablespace_name \"TS\" from user_tablespaces@" + dblink;
         ArrayList<String> TS = new ArrayList();
+        String ts;
         try {
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();
             while (rs.next()) {
-                String ts = rs.getString("TS");
-                TS.add(ts);
+                ts = rs.getString("TS");
+                if (!ts.equals("TEMP")) {
+                    TS.add(ts);
+                }
             }
         } catch (SQLException ex) {
         }
@@ -70,15 +76,16 @@ public class DBManager {
             return "XE";
         }
     }
-    
-    public static boolean connectDB(){
-        return connectDB(Parameters.dbusername, Parameters.dbpassword,"localhost",Parameters.dbport,Parameters.dbInstance);
+
+    public static boolean connectDB() {
+        Parameters.configureDB();
+        return connectDB(Parameters.dbusername, Parameters.dbpassword, "localhost", Parameters.dbport, Parameters.dbInstance);
     }
-    
+
     public static boolean connectDB(String username, String pass, String hostName, String port, String SID) {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:" + port + ":" + "BD1", username, pass);//OJOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:" + port + ":" + SID, username, pass);
         } catch (SQLException | ClassNotFoundException ex) {
             return false;
         }
@@ -103,6 +110,7 @@ public class DBManager {
                 return false;
             }
             dbs.put("Local", new DB("Local", "localhost", tablespaces()));
+            Parameters.configureNodes();//-------------------------------------------------------------------------------------------------
             return true;
         } else {
             return false;
@@ -112,8 +120,8 @@ public class DBManager {
     public static HashMap<String, DB> getDbs() {
         return dbs;
     }
-    
-    public static String getNameFromDB(String db_link){
+
+    public static String getNameFromDB(String db_link) {
         return dbs.get(db_link).getHost();
     }
 

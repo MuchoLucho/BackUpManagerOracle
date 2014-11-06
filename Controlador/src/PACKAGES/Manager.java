@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,10 +39,6 @@ public class Manager {
         return ret;
     }
 
-    private static void createStrategy_btnActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.print(Arrays.toString(evt.getActionCommand().split(";")));
-    }
-
     static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
         listFiles().stream().forEach((File f) -> {
@@ -58,7 +55,7 @@ public class Manager {
         return tb;
     }
 
-    static String[] changeFile(String str) {
+    static List<String[]> changeFile(String str) {
         List<String[]> tb = new ArrayList();
         listFiles().stream().forEach((File f) -> {
             try {
@@ -71,7 +68,7 @@ public class Manager {
                 Logger.getLogger(ConstructorFiles.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        return tb.get(0);
+        return tb;
     }
 
     private static List<File> listFiles() {
@@ -122,7 +119,20 @@ public class Manager {
         } catch (URISyntaxException e) {
         }
     }
-    
+
+    public static String contentFile(String nameFile) {
+        String path = System.getProperty("user.home") + "/narf/controller/rman_scripts/";
+        Path p = FileSystems.getDefault().getPath(path, nameFile);
+        StringBuilder str = new StringBuilder();
+        try {
+            Files.lines(p, StandardCharsets.UTF_8).forEach((String s) -> {
+                str.append(s).append("\n");
+            });
+        } catch (IOException ex) {
+        }
+        return str.toString();
+    }
+
     /*Main*/
     public static void main(String args[]) {
         Loading l = new Loading();

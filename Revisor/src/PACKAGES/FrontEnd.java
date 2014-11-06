@@ -196,8 +196,6 @@ public class FrontEnd extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,
                     Manager.outputRman(rman),
                     "Log " + rman, JOptionPane.INFORMATION_MESSAGE);
-            //int column = target.getSelectedColumn();
-            //System.out.println(row + "" + column);
         }
     }//GEN-LAST:event_tableMouseClicked
 

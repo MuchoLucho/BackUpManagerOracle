@@ -4,8 +4,6 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="modes_group">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="time_group">
-    </Component>
     <Component class="javax.swing.ButtonGroup" name="incLevel_group">
     </Component>
     <Component class="javax.swing.JMenuItem" name="jMenuItem4">
@@ -703,6 +701,9 @@
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="archivo"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

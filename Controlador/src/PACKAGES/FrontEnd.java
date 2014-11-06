@@ -26,6 +26,7 @@ public class FrontEnd extends javax.swing.JFrame {
         Parameters.configureDB();
         initComponents();
         tbs();
+        table.setAutoCreateRowSorter(true);
         this.setLocationRelativeTo(null);
         l.setVisible(false);
         l.dispose();
@@ -36,7 +37,6 @@ public class FrontEnd extends javax.swing.JFrame {
     private void initComponents() {
 
         modes_group = new javax.swing.ButtonGroup();
-        time_group = new javax.swing.ButtonGroup();
         incLevel_group = new javax.swing.ButtonGroup();
         jMenuItem4 = new javax.swing.JMenuItem();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -457,6 +457,11 @@ public class FrontEnd extends javax.swing.JFrame {
         jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
         table.setModel(PACKAGES.Manager.tm);
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                archivo(evt);
+            }
+        });
         jScrollPane3.setViewportView(table);
 
         jPanel2.add(jScrollPane3, java.awt.BorderLayout.CENTER);
@@ -561,7 +566,7 @@ public class FrontEnd extends javax.swing.JFrame {
         tbs();
     }//GEN-LAST:event_databases_cmbActionPerformed
 
-    private void createStragedy() {
+    private boolean createStragedy() {
         String name = stragedy_txt.getText();
         if (Manager.readFiles(name).isEmpty()) {//Not exist previously (use name above)
             //Global between types
@@ -594,11 +599,14 @@ public class FrontEnd extends javax.swing.JFrame {
             DB dbinfo = DBManager.getDbs().get(db);
             if (dbinfo != null && dbinfo.getIP() != null && dbinfo.getLinux_user() != null) {
                 ExeConnection.sendFiles(name, dbinfo.getLinux_user(), dbinfo.getIP()); //envia ambas cosas
+                return true;
             } else {
                 System.err.println("ERROR SENDING");
+                return false;
             }
         } else {
-            JOptionPane.showMessageDialog(null, name, "The name for your strategy is already taken,\n select another name and try again", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "The name for your strategy is already taken,\n select another name and try again", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 
@@ -664,9 +672,10 @@ public class FrontEnd extends javax.swing.JFrame {
         if (stragedy_txt.getText().equals("") || date_txt.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "You must digit a name for the strategy and set the time for execution", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            createStragedy();
-            JOptionPane.showMessageDialog(null, "Strategy " + stragedy_txt.getText() + " Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            limpiarCampos();
+            if (createStragedy()) {
+                JOptionPane.showMessageDialog(null, "Strategy " + stragedy_txt.getText() + " Created Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                limpiarCampos();
+            }
         }
     }//GEN-LAST:event_createStrategy_btnActionPerformed
 
@@ -675,20 +684,26 @@ public class FrontEnd extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btnActionPerformed
-        String[] aux = Manager.changeFile(delete_txt.getText());
-        if (aux != null) {
-            ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[2], false);
-            DB dbinfo = DBManager.getDbs().get(aux[4]);
-            if (dbinfo != null && dbinfo.getIP() != null && dbinfo.getLinux_user() != null) {
-                if (ExeConnection.sendFiles(aux[0], dbinfo.getLinux_user(), dbinfo.getIP())) {
-                    JOptionPane.showMessageDialog(null, "Success disabling the strategy", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    Manager.filter("\t");
-                } //envia ambas cosas
+        if (!(delete_txt.getText().equals("\t") || delete_txt.getText().isEmpty())) {
+            List<String[]> aux2 = Manager.changeFile(delete_txt.getText());
+            if (!aux2.isEmpty()) {
+                String[] aux = aux2.get(0);
+                ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[2], false);
+                DB dbinfo = DBManager.getDbs().get(aux[4]);
+                if (dbinfo != null && dbinfo.getIP() != null && dbinfo.getLinux_user() != null) {
+                    if (ExeConnection.sendFiles(aux[0], dbinfo.getLinux_user(), dbinfo.getIP())) {
+                        JOptionPane.showMessageDialog(null, "Success disabling the strategy", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        Manager.filter("\t");
+                    } //envia ambas cosas
+                } else {
+                    System.err.println("ERROR SENDING");
+                    ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[2], true);
+                }
             } else {
-                System.err.println("ERROR SENDING");
+                JOptionPane.showMessageDialog(null, "There is not any strategy called " + delete_txt.getText() + " and marked as active", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, evt, "There is not any strategy called " + delete_txt.getText() + " and marked as active", WIDTH);
+            JOptionPane.showMessageDialog(null, "You must provide a valid name", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_delete_btnActionPerformed
 
@@ -742,6 +757,17 @@ public class FrontEnd extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_fork_us_drdActionPerformed
 
+    private void archivo(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_archivo
+        if (evt.getClickCount() == 2) {
+            javax.swing.JTable target = (javax.swing.JTable) evt.getSource();
+            int row = target.getSelectedRow();
+            String rman = (String) table.getModel().getValueAt(row, 2);
+            JOptionPane.showMessageDialog(null,
+                    Manager.contentFile(rman),
+                    "Log " + rman, JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_archivo
+
     public javax.swing.ComboBoxModel databases() {
         java.util.ArrayList<String> vect = (ArrayList<String>) DBManager.getDbs().values().stream().map((x) -> x.getLink_name()).collect(Collectors.toList());
         return new javax.swing.DefaultComboBoxModel(vect.toArray());
@@ -758,7 +784,6 @@ public class FrontEnd extends javax.swing.JFrame {
     }
 
     private final javax.swing.DefaultListModel tbs;
-    private javax.swing.table.TableModel tabla;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Help;
     private javax.swing.JMenuItem about_drd;
@@ -808,7 +833,6 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JList tablespaces_lst;
     private javax.swing.JMenuItem third_party_drd;
     private javax.swing.JMenuItem time_drd;
-    private javax.swing.ButtonGroup time_group;
     private javax.swing.JLabel time_lbl;
     private javax.swing.JRadioButton total_rnd;
     private javax.swing.JLabel type_lbl;

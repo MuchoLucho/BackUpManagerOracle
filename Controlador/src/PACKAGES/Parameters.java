@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class Parameters {//All the directories and files needed for the software to work. Files must always end with /
 
     public static final String home = System.getProperty("user.home");
-
     public static final String configFile = home + "/narf/controller/config";
     public static final String dbparams = home + "/narf/controller/dbparams";
 
@@ -59,7 +58,6 @@ public class Parameters {//All the directories and files needed for the software
             if (configLines != null) {
                 configLines.stream().forEach((line) -> {
                     Parameters.getNodeParameters(line);
-
                 });
             }
 
@@ -92,7 +90,6 @@ public class Parameters {//All the directories and files needed for the software
                 dbInfo.setIP(IP);
                 dbInfo.setLinux_user(linux);
             }
-
         } else {
             System.err.println("COULD NOT SET MOTHER PARAMETERS, USING DEFAULT");
         }

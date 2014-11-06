@@ -2,7 +2,7 @@ package PACKAGES;
 
 import java.util.ArrayList;
 
-public class DB{
+public class DB {
 
     public DB(String link_name, String db_name, ArrayList<String> tbs) {
         this.link_name = link_name;
@@ -20,8 +20,8 @@ public class DB{
 
     public ArrayList<String> getTablespaces() {
         return tablespaces;
-    }   
-    
+    }
+
     public String getIP() {
         return IP;
     }
@@ -37,12 +37,11 @@ public class DB{
     public void setLinux_user(String linux_user) {
         this.linux_user = linux_user;
     }
-    
+
     private final String link_name;
     private final String db_name;
-    private String IP="127.0.0.1";
-    private String linux_user="unset";
+    private String IP = "127.0.0.1";
+    private String linux_user = "";
     private final ArrayList<String> tablespaces;
 
- 
 }
