@@ -52,8 +52,6 @@ public class Parameters {//All the directories and files needed for the software
 
     public static void configureNodes() {
         File configFile = new File(Parameters.configFile);
-        String mUser = null;
-        String mIP = null;
         try {
             //LIST OF ALL CONFIG LINES.
             ArrayList<String> configLines = (ArrayList<String>) Files.lines(configFile.toPath()).collect(Collectors.toList()); //In case I need any more parameters
@@ -73,9 +71,9 @@ public class Parameters {//All the directories and files needed for the software
 
     private static void getNodeParameters(String msParamLine) {
         String[] motherParameters = null;
-        String link = null;
-        String linux = null;
-        String IP = null;
+        String link;
+        String linux;
+        String IP;
         if (msParamLine != null && !msParamLine.isEmpty()) {
             motherParameters = msParamLine.split("\\t");
         }
@@ -99,24 +97,4 @@ public class Parameters {//All the directories and files needed for the software
             System.err.println("COULD NOT SET MOTHER PARAMETERS, USING DEFAULT");
         }
     }
-
-//    private static void setDBParameters(String dbParamLine) {
-//        String[] myDBParameters = null;
-//        if (dbParamLine != null && !dbParamLine.isEmpty()) {
-//            myDBParameters = dbParamLine.split("\\t");
-//        }
-//        /*
-//         Database parameters
-//         [0] username
-//         [1] password
-//         [2] port
-//         [3] Instance
-//         */
-//        if (myDBParameters != null && myDBParameters.length == 4) {
-//            dbusername = myDBParameters[0];
-//            dbpassword = myDBParameters[1];
-//            dbport = myDBParameters[2];
-//            dbInstance = myDBParameters[3];
-//        }
-//    }
 }

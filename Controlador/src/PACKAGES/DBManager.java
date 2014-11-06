@@ -78,7 +78,7 @@ public class DBManager {
     public static boolean connectDB(String username, String pass, String hostName, String port, String SID) {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:" + port + ":" + SID, username, pass);
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:" + port + ":" + "BD1", username, pass);//OJOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
         } catch (SQLException | ClassNotFoundException ex) {
             return false;
         }

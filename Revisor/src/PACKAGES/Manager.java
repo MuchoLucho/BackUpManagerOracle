@@ -1,5 +1,9 @@
 package PACKAGES;
 
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import javax.swing.table.DefaultTableModel;
 
 /*TODO: HACER UN AUTOSORT EN LOS HEADERS DE LAS COLUMNAS */
@@ -38,6 +42,27 @@ public class Manager {
 
     public static void filter(String str) {
         tm.setDataVector(Manager.getTable(str), new String[]{"Strategy", "Database", "Date", "Hour", "Success", "Rman Output"});
+    }
+
+    public static String outputRman(String str) {
+        return Reader.contentFile(str);
+    }
+
+    public static void openWebpage(URI uri) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public static void openWebpage(URL url) {
+        try {
+            openWebpage(url.toURI());
+        } catch (URISyntaxException e) {
+        }
     }
 
     public static void main(String args[]) {

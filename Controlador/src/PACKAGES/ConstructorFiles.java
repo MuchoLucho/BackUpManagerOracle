@@ -5,7 +5,6 @@ import java.io.FileWriter;
 
 public class ConstructorFiles {
 
-    //--> EC0012	* * * * *	rman.rman	true
     public static void createStrategyFile(String name, String DB, String time, boolean active) {
         StringBuilder esc = new StringBuilder();
         try {

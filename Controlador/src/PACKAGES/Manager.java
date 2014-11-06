@@ -1,7 +1,11 @@
 package PACKAGES;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,7 +18,7 @@ import java.util.stream.Collectors;
 import javax.swing.table.DefaultTableModel;
 
 public class Manager {
-    
+
     public static Object[][] toTableModel(String str) {
         int i = 0;
         Object[] aux = readFiles(str).toArray();
@@ -33,11 +37,11 @@ public class Manager {
         }
         return ret;
     }
-    
+
     private static void createStrategy_btnActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.print(Arrays.toString(evt.getActionCommand().split(";")));
     }
-    
+
     static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
         listFiles().stream().forEach((File f) -> {
@@ -53,7 +57,7 @@ public class Manager {
         });
         return tb;
     }
-    
+
     static String[] changeFile(String str) {
         List<String[]> tb = new ArrayList();
         listFiles().stream().forEach((File f) -> {
@@ -69,7 +73,7 @@ public class Manager {
         });
         return tb.get(0);
     }
-    
+
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
@@ -82,28 +86,47 @@ public class Manager {
         }
         return filesInFolder;
     }
-    
+
     public static Object[][] table;
-    
+
     public static Object[][] getTable(String str) {
         table = toTableModel(str);
         return table;
     }
-    
+
     public static DefaultTableModel tm = new DefaultTableModelImpl(
             Manager.getTable("\t"),
             new String[]{
                 "Strategy", "Time", "Script", "Active", "Database"
             });
-    
+
     public static void filter(String str) {
         tm.setDataVector(Manager.getTable(str), new String[]{
             "Strategy", "Time", "Script", "Active", "Database"
         });
     }
 
+    public static void openWebpage(URI uri) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public static void openWebpage(URL url) {
+        try {
+            openWebpage(url.toURI());
+        } catch (URISyntaxException e) {
+        }
+    }
+    
     /*Main*/
     public static void main(String args[]) {
+        Loading l = new Loading();
+        l.setVisible(true);
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -115,13 +138,13 @@ public class Manager {
             java.util.logging.Logger.getLogger(FrontEnd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         java.awt.EventQueue.invokeLater(() -> {
-            new FrontEnd().setVisible(true);
+            new FrontEnd(l).setVisible(true);
         });
     }
 
     /*Inner classes*/
     private static class DefaultTableModelImpl extends DefaultTableModel {
-        
+
         public DefaultTableModelImpl(Object[][] data, Object[] columnNames) {
             super(data, columnNames);
         }
@@ -131,12 +154,12 @@ public class Manager {
         boolean[] canEdit = new boolean[]{
             false, false, false, false, false
         };
-        
+
         @Override
         public Class getColumnClass(int columnIndex) {
             return types[columnIndex];
         }
-        
+
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             return canEdit[columnIndex];

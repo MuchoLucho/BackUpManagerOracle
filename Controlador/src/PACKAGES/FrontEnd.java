@@ -4,10 +4,14 @@ import static PACKAGES.ConstructorFiles.RmanFull;
 import static PACKAGES.ConstructorFiles.RmanIncremental;
 import static PACKAGES.ConstructorFiles.RmanWhole;
 import static PACKAGES.DBManager.getNameFromDB;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
@@ -15,7 +19,7 @@ import javax.swing.JOptionPane;
 
 public class FrontEnd extends javax.swing.JFrame {
 
-    public FrontEnd() {
+    public FrontEnd(Loading l) {
         this.tbs = new DefaultListModel();
         DBManager.llenado();
         Parameters.configureNodes();
@@ -23,6 +27,8 @@ public class FrontEnd extends javax.swing.JFrame {
         initComponents();
         tbs();
         this.setLocationRelativeTo(null);
+        l.setVisible(false);
+        l.dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -32,6 +38,7 @@ public class FrontEnd extends javax.swing.JFrame {
         modes_group = new javax.swing.ButtonGroup();
         time_group = new javax.swing.ButtonGroup();
         incLevel_group = new javax.swing.ButtonGroup();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -73,8 +80,15 @@ public class FrontEnd extends javax.swing.JFrame {
         delete_btn = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        Help = new javax.swing.JMenu();
+        time_drd = new javax.swing.JMenuItem();
+        licenses_drd = new javax.swing.JMenuItem();
+        third_party_drd = new javax.swing.JMenuItem();
+        about_drd = new javax.swing.JMenuItem();
+        fork_us_drd = new javax.swing.JMenuItem();
+
+        jMenuItem4.setText("jMenuItem4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NARF BU Manager");
@@ -451,10 +465,51 @@ public class FrontEnd extends javax.swing.JFrame {
 
         getContentPane().add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
 
-        jMenu1.setText("Help");
-        jMenuBar1.add(jMenu1);
+        Help.setText("Help");
 
-        setJMenuBar(jMenuBar1);
+        time_drd.setText("Undertanding Date & Time");
+        time_drd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                time_drdActionPerformed(evt);
+            }
+        });
+        Help.add(time_drd);
+
+        licenses_drd.setText("License");
+        licenses_drd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                licenses_drdActionPerformed(evt);
+            }
+        });
+        Help.add(licenses_drd);
+
+        third_party_drd.setText("Third Party Libraries");
+        third_party_drd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                third_party_drdActionPerformed(evt);
+            }
+        });
+        Help.add(third_party_drd);
+
+        about_drd.setText("About the Authors");
+        about_drd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                about_drdActionPerformed(evt);
+            }
+        });
+        Help.add(about_drd);
+
+        fork_us_drd.setText("Get the Source Code");
+        fork_us_drd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fork_us_drdActionPerformed(evt);
+            }
+        });
+        Help.add(fork_us_drd);
+
+        jMenuBar2.add(Help);
+
+        setJMenuBar(jMenuBar2);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -543,7 +598,7 @@ public class FrontEnd extends javax.swing.JFrame {
                 System.err.println("ERROR SENDING");
             }
         } else {
-            JOptionPane.showMessageDialog(null, name, "The name for your strategy is already taken, select another name and try again", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, name, "The name for your strategy is already taken,\n select another name and try again", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -625,7 +680,7 @@ public class FrontEnd extends javax.swing.JFrame {
             ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[2], false);
             DB dbinfo = DBManager.getDbs().get(aux[4]);
             if (dbinfo != null && dbinfo.getIP() != null && dbinfo.getLinux_user() != null) {
-                if(ExeConnection.sendFiles(aux[0], dbinfo.getLinux_user(), dbinfo.getIP())){
+                if (ExeConnection.sendFiles(aux[0], dbinfo.getLinux_user(), dbinfo.getIP())) {
                     JOptionPane.showMessageDialog(null, "Success disabling the strategy", "Success", JOptionPane.INFORMATION_MESSAGE);
                     Manager.filter("\t");
                 } //envia ambas cosas
@@ -636,6 +691,56 @@ public class FrontEnd extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, evt, "There is not any strategy called " + delete_txt.getText() + " and marked as active", WIDTH);
         }
     }//GEN-LAST:event_delete_btnActionPerformed
+
+    private void time_drdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_time_drdActionPerformed
+        JOptionPane.showMessageDialog(null, new javax.swing.ImageIcon(getClass().getResource("/IMG/cron.gif")), "Time Syntax", -1);
+    }//GEN-LAST:event_time_drdActionPerformed
+
+    private void licenses_drdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_licenses_drdActionPerformed
+        JOptionPane.showMessageDialog(null, "This program is free software: you can redistribute it and/or modify\n"
+                + "    it under the terms of the GNU General Public License as published by\n"
+                + "    the Free Software Foundation, either version 3 of the License, or\n"
+                + "    (at your option) any later version.\n"
+                + "\n"
+                + "    This program is distributed in the hope that it will be useful,\n"
+                + "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+                + "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+                + "    GNU General Public License for more details.\n"
+                + "\n"
+                + "    You should have received a copy of the GNU General Public License\n"
+                + "    along with this program.  If not, see <http://www.gnu.org/licenses/>.", "License GPLv3", -1, new javax.swing.ImageIcon(getClass().getResource("/IMG/gpl3.png")));
+    }//GEN-LAST:event_licenses_drdActionPerformed
+
+    private void third_party_drdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_third_party_drdActionPerformed
+        JOptionPane.showMessageDialog(null, "For the Scheduler is in Use on the Executor Side\n"
+                + "CRON4J by Sauron Software\n"
+                + "cron4j is Free Software and it is licensed under LGPL\n", "Third Party Software", -1, new javax.swing.ImageIcon(getClass().getResource("/IMG/lgpl3.png")));
+    }//GEN-LAST:event_third_party_drdActionPerformed
+
+    private void about_drdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_about_drdActionPerformed
+        JOptionPane.showMessageDialog(null, "This software was developed by Students\n"
+                + "from National University of Costa Rica:  The truth makes us free\n\n"
+                + "Javier Porras Valenzuela\n"
+                + "Luis Carlos Segura Molina\n"
+                + "Luis Enrique Ramírez Vargas\n"
+                + "\nThe software was developed for Datbase Administration class\n"
+                + "imparted by Msc. Johnny Villalobos Murillo", "About Students", -1, new javax.swing.ImageIcon(getClass().getResource("/IMG/una.png")));
+    }//GEN-LAST:event_about_drdActionPerformed
+
+    private void fork_us_drdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fork_us_drdActionPerformed
+        if (JOptionPane.showOptionDialog(null, "All our Source Code is available \n in Github Servers"
+                + "just fork us at \n https://github.com/lerv22/BackUpManagerOracle\n"
+                + "\nDo you want to go to the site?", "Fork Us",
+                JOptionPane.DEFAULT_OPTION, -1, new javax.swing.ImageIcon(getClass().getResource("/IMG/github.png")),
+                new String[]{"No", "Yes"},
+                "default") == 1) {
+            try {
+                Manager.openWebpage(new URL("https://github.com/lerv22/BackUpManagerOracle"));
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(FrontEnd.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_fork_us_drdActionPerformed
 
     public javax.swing.ComboBoxModel databases() {
         java.util.ArrayList<String> vect = (ArrayList<String>) DBManager.getDbs().values().stream().map((x) -> x.getLink_name()).collect(Collectors.toList());
@@ -655,6 +760,8 @@ public class FrontEnd extends javax.swing.JFrame {
     private final javax.swing.DefaultListModel tbs;
     private javax.swing.table.TableModel tabla;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Help;
+    private javax.swing.JMenuItem about_drd;
     private javax.swing.JButton addEvt_btn;
     private javax.swing.JCheckBox archive_chk;
     private javax.swing.JLabel banner_lbl;
@@ -668,13 +775,14 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JButton delteEvt_btn;
     private javax.swing.JButton filter_btn;
     private javax.swing.JTextField filter_txt;
+    private javax.swing.JMenuItem fork_us_drd;
     private javax.swing.JRadioButton full_rnd;
     private javax.swing.ButtonGroup incLevel_group;
     private javax.swing.JLabel include_lbl;
     private javax.swing.JRadioButton incremetnal_rnd;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -688,6 +796,7 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel level_lbl;
+    private javax.swing.JMenuItem licenses_drd;
     private javax.swing.JRadioButton lvl_0_rnd;
     private javax.swing.JRadioButton lvl_1_rnd;
     private javax.swing.ButtonGroup modes_group;
@@ -697,6 +806,8 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.JTable table;
     private javax.swing.JLabel tablespace_lbl;
     private javax.swing.JList tablespaces_lst;
+    private javax.swing.JMenuItem third_party_drd;
+    private javax.swing.JMenuItem time_drd;
     private javax.swing.ButtonGroup time_group;
     private javax.swing.JLabel time_lbl;
     private javax.swing.JRadioButton total_rnd;
