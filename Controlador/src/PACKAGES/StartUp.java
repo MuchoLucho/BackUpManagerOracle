@@ -2,8 +2,6 @@ package PACKAGES;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class StartUp {
 
@@ -26,7 +24,6 @@ public class StartUp {
         protected void done() {
             try {
                 for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                    System.out.println(info.getName());
                     if ("GTK+".equals(info.getName())) {
                         javax.swing.UIManager.setLookAndFeel(info.getClassName());
                         break;
@@ -35,7 +32,12 @@ public class StartUp {
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
                 java.util.logging.Logger.getLogger(FrontEnd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-            new FrontEnd().setVisible(true);
+            try {
+                new FrontEnd().setVisible(true);
+            } catch (ExceptionInInitializerError e) {
+                l.dispose();
+                System.exit(0);                
+            }
             l.dispose();
         }
     }

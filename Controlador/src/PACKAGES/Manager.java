@@ -17,15 +17,15 @@ import java.util.stream.Collectors;
 import javax.swing.table.DefaultTableModel;
 
 public class Manager {
-
+    
     public static Object[][] table;
-
+    
     public static DefaultTableModel tm = new DefaultTableModelImpl(
             Manager.getTable("\t"),
             new String[]{
                 "Strategy", "Time", "Script", "Active", "Database"
             });
-
+    
     public static Object[][] toTableModel(String str) {
         int i = 0;
         Object[] aux = readFiles(str).toArray();
@@ -44,7 +44,7 @@ public class Manager {
         }
         return ret;
     }
-
+    
     static List<String[]> readFiles(String str) {
         List<String[]> tb = new ArrayList();
         listFiles().stream().forEach((File f) -> {
@@ -66,8 +66,9 @@ public class Manager {
         listFiles().stream().forEach((File f) -> {
             try {
                 Files.lines(f.toPath()).forEach((String s) -> {
-                    if (s.contains(str) && s.contains("true")) {
-                        tb.add(s.split("\t"));
+                    String[] split = s.split("\t");
+                    if (split[0].equalsIgnoreCase(str) && split[3].equalsIgnoreCase("true")) {
+                        tb.add(split);
                     }
                 });
             } catch (IOException ex) {
@@ -76,7 +77,7 @@ public class Manager {
         });
         return tb;
     }
-
+    
     private static List<File> listFiles() {
         List<File> filesInFolder = null;
         try {
@@ -90,18 +91,18 @@ public class Manager {
         }
         return filesInFolder;
     }
-
+    
     public static Object[][] getTable(String str) {
         table = toTableModel(str);
         return table;
     }
-
+    
     public static void filter(String str) {
         tm.setDataVector(Manager.getTable(str), new String[]{
             "Strategy", "Time", "Script", "Active", "Database"
         });
     }
-
+    
     public static String contentFile(String nameFile) {
         String path = System.getProperty("user.home") + "/narf/controller/rman_scripts/";
         Path p = FileSystems.getDefault().getPath(path, nameFile);
@@ -116,7 +117,7 @@ public class Manager {
         }
         return str.toString();
     }
-
+    
     public static void openWebpage(URI uri) {
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -127,7 +128,7 @@ public class Manager {
             }
         }
     }
-
+    
     public static void openWebpage(URL url) {
         try {
             openWebpage(url.toURI());
@@ -138,7 +139,7 @@ public class Manager {
 
     /*Inner class for the table*/
     private static class DefaultTableModelImpl extends DefaultTableModel {
-
+        
         public DefaultTableModelImpl(Object[][] data, Object[] columnNames) {
             super(data, columnNames);
         }
@@ -148,12 +149,12 @@ public class Manager {
         boolean[] canEdit = new boolean[]{
             false, false, false, false, false
         };
-
+        
         @Override
         public Class getColumnClass(int columnIndex) {
             return types[columnIndex];
         }
-
+        
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             return canEdit[columnIndex];
