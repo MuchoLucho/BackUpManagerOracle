@@ -80,5 +80,4 @@ public class Manager {
             new FrontEnd().setVisible(true);
         });
     }
-
 }

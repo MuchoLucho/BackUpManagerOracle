@@ -16,7 +16,6 @@ public class ConstructorFiles {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static void RmanIncremental(String db, String rman, int level, boolean log, boolean control, String tbs[]) {
@@ -51,7 +50,6 @@ public class ConstructorFiles {
                 escribir.write("release channel c1; \n");
                 escribir.write("} \n");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,12 +66,13 @@ public class ConstructorFiles {
                 escribir2.write("connect target rmanuser/rmanuser@" + db + " \n");
                 escribir2.write("connect catalog rmanuser/rmanuser@" + db + " \n");
                 escribir2.write("run { \n");
-                for (String tb : tbs) {
-                    Tbs.append(tb).append(",");
+                if (tbs.length != 0) {
+                    for (String tb : tbs) {
+                        Tbs.append(tb).append(",");
+                    }
+                    Tbs.delete(Tbs.length() - 1, Tbs.length());
+                    escribir2.write("backup tablespace " + Tbs + "; \n");
                 }
-                //Tbs.substring(0, Tbs.length() - 1);
-                Tbs.delete(Tbs.length() - 1, Tbs.length());
-                escribir2.write("backup tablespace " + Tbs + "; \n");
                 if (logfiles) {
                     escribir2.write("BACKUP ARCHIVELOG ALL; \n");
                 }
@@ -99,7 +98,7 @@ public class ConstructorFiles {
                 if (logfiles) {
                     escribir3.write("BACKUP AS BACKUPSET DATABASE PLUS ARCHIVELOG;");
                 } else {
-                    escribir3.write("BACKUP AS BACKUPSET DATABASE");
+                    escribir3.write("BACKUP AS BACKUPSET DATABASE;");
                 }
                 escribir3.write("backup current controlfile; \n");
                 escribir3.write("} \n");

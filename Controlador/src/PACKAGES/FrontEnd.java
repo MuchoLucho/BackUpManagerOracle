@@ -15,21 +15,40 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JOptionPane;
 
 public class FrontEnd extends javax.swing.JFrame {
 
-    public FrontEnd(Loading l) {
+    public FrontEnd() {
         this.tbs = new DefaultListModel();
-        DBManager.llenado();
-        Parameters.configureNodes();
-        Parameters.configureDB();
         initComponents();
         tbs();
+        tablespaces_lst.setSelectionModel(new DefaultListSelectionModel() {
+            private static final long serialVersionUID = 1L;
+            boolean gestureStarted = false;
+
+            @Override
+            public void setSelectionInterval(int index0, int index1) {
+                if (!gestureStarted) {
+                    if (isSelectedIndex(index0)) {
+                        super.removeSelectionInterval(index0, index1);
+                    } else {
+                        super.addSelectionInterval(index0, index1);
+                    }
+                }
+                gestureStarted = true;
+            }
+
+            @Override
+            public void setValueIsAdjusting(boolean isAdjusting) {
+                if (isAdjusting == false) {
+                    gestureStarted = false;
+                }
+            }
+        });
         table.setAutoCreateRowSorter(true);
         this.setLocationRelativeTo(null);
-        l.setVisible(false);
-        l.dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -63,6 +82,7 @@ public class FrontEnd extends javax.swing.JFrame {
         tablespaces_lst = new javax.swing.JList();
         note_lbl = new javax.swing.JLabel();
         createStrategy_btn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         database_lbl = new javax.swing.JLabel();
         databases_cmb = new javax.swing.JComboBox();
@@ -239,14 +259,18 @@ public class FrontEnd extends javax.swing.JFrame {
         tablespaces_lst.setSelectionBackground(new java.awt.Color(255, 102, 102));
         jScrollPane1.setViewportView(tablespaces_lst);
 
-        note_lbl.setText("*Press Ctrl+Click to add more than one TBs");
+        note_lbl.setText("*Select by clicking the item, you can select");
 
+        createStrategy_btn.setBackground(new java.awt.Color(102, 102, 255));
+        createStrategy_btn.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
         createStrategy_btn.setText("Create Strategy");
         createStrategy_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createStrategy_btnActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("many, reclick to deselect the tablespace");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -261,23 +285,30 @@ public class FrontEnd extends javax.swing.JFrame {
                         .addComponent(time_lbl))
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGap(48, 48, 48)
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(note_lbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))
-                        .addGap(112, 112, 112)
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(date_txt)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
                             .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addComponent(addEvt_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(delteEvt_btn))
-                            .addComponent(createStrategy_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(note_lbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1))
+                                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel10Layout.createSequentialGroup()
+                                        .addGap(112, 112, 112)
+                                        .addComponent(addEvt_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(delteEvt_btn)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(date_txt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(createStrategy_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(time_lbl)
                     .addComponent(tablespace_lbl))
@@ -288,15 +319,16 @@ public class FrontEnd extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(note_lbl))
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(14, 14, 14)
                         .addComponent(date_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(addEvt_btn)
                             .addComponent(delteEvt_btn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(createStrategy_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1))
         );
 
         database_lbl.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
@@ -374,7 +406,7 @@ public class FrontEnd extends javax.swing.JFrame {
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Create new Strategy", jPanel1);
@@ -583,14 +615,24 @@ public class FrontEnd extends javax.swing.JFrame {
                             break;
                         case "Incremental BackUp":
                             List<String> a = tablespaces_lst.getSelectedValuesList();
-                            Object[] aux = a.toArray();
-                            RmanIncremental(getNameFromDB(db), name, getLevel(), logfiles, control_chk.isSelected(), Arrays.copyOf(aux, aux.length, String[].class));
-                            break;
+                            if (control_chk.isSelected() || logfiles || !a.isEmpty()) {
+                                Object[] aux = a.toArray();
+                                RmanIncremental(getNameFromDB(db), name, getLevel(), logfiles, control_chk.isSelected(), Arrays.copyOf(aux, aux.length, String[].class));
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "You must at least select one tablespace or the control files or logfiles", "Error", JOptionPane.ERROR_MESSAGE);
+                                return false;
+                            }
                         case "Full BackUp":
                             List<String> a2 = tablespaces_lst.getSelectedValuesList();
-                            Object[] aux2 = a2.toArray();
-                            RmanFull(name, getNameFromDB(db), Arrays.copyOf(aux2, aux2.length, String[].class), logfiles);
-                            break;
+                            if (control_chk.isSelected() || logfiles || !a2.isEmpty()) {
+                                Object[] aux2 = a2.toArray();
+                                RmanFull(name, getNameFromDB(db), Arrays.copyOf(aux2, aux2.length, String[].class), logfiles);
+                                break;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "You must at least select one tablespace or the control files or logfiles", "Error", JOptionPane.ERROR_MESSAGE);
+                                return false;
+                            }
                     }
                 }
             }
@@ -688,16 +730,17 @@ public class FrontEnd extends javax.swing.JFrame {
             List<String[]> aux2 = Manager.changeFile(delete_txt.getText());
             if (!aux2.isEmpty()) {
                 String[] aux = aux2.get(0);
-                ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[2], false);
+                ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[1], false);
                 DB dbinfo = DBManager.getDbs().get(aux[4]);
                 if (dbinfo != null && dbinfo.getIP() != null && dbinfo.getLinux_user() != null) {
                     if (ExeConnection.sendFiles(aux[0], dbinfo.getLinux_user(), dbinfo.getIP())) {
                         JOptionPane.showMessageDialog(null, "Success disabling the strategy", "Success", JOptionPane.INFORMATION_MESSAGE);
                         Manager.filter("\t");
-                    } //envia ambas cosas
+                    } //send both
                 } else {
                     System.err.println("ERROR SENDING");
-                    ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[2], true);
+                    ConstructorFiles.createStrategyFile(aux[0], aux[4], aux[1], true);
+                    JOptionPane.showMessageDialog(null, "Error disabling the strategy, the destination is not available", "Error sending", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "There is not any strategy called " + delete_txt.getText() + " and marked as active", "Error", JOptionPane.ERROR_MESSAGE);
@@ -734,7 +777,7 @@ public class FrontEnd extends javax.swing.JFrame {
 
     private void about_drdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_about_drdActionPerformed
         JOptionPane.showMessageDialog(null, "This software was developed by Students\n"
-                + "from National University of Costa Rica:  The truth makes us free\n\n"
+                + "from National University of Costa Rica:  \"The truth makes us free\"\n\n"
                 + "Javier Porras Valenzuela\n"
                 + "Luis Carlos Segura Molina\n"
                 + "Luis Enrique Ramírez Vargas\n"
@@ -780,7 +823,6 @@ public class FrontEnd extends javax.swing.JFrame {
         DBManager.getDbs().get((String) databases_cmb.getModel().getSelectedItem()).getTablespaces().stream().forEach((str) -> {
             tbs.addElement(str);
         });
-        tablespaces_lst.setSelectedIndex(0);
     }
 
     private final javax.swing.DefaultListModel tbs;
@@ -805,6 +847,7 @@ public class FrontEnd extends javax.swing.JFrame {
     private javax.swing.ButtonGroup incLevel_group;
     private javax.swing.JLabel include_lbl;
     private javax.swing.JRadioButton incremetnal_rnd;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem4;

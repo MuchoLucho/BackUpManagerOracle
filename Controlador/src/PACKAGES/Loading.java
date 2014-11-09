@@ -5,6 +5,7 @@ public class Loading extends javax.swing.JFrame {
     public Loading() {
         initComponents();
         setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -20,6 +21,7 @@ public class Loading extends javax.swing.JFrame {
         setTitle("Loading");
         setUndecorated(true);
         setResizable(false);
+        setType(java.awt.Window.Type.POPUP);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 

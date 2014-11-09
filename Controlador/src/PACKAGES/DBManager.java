@@ -28,6 +28,7 @@ public class DBManager {
                 }
             }
         } catch (SQLException ex) {
+            
         }
         return TS;
     }

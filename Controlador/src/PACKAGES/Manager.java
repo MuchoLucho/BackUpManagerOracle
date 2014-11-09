@@ -13,12 +13,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.table.DefaultTableModel;
 
 public class Manager {
+
+    public static Object[][] table;
+
+    public static DefaultTableModel tm = new DefaultTableModelImpl(
+            Manager.getTable("\t"),
+            new String[]{
+                "Strategy", "Time", "Script", "Active", "Database"
+            });
 
     public static Object[][] toTableModel(String str) {
         int i = 0;
@@ -49,7 +55,7 @@ public class Manager {
                     }
                 });
             } catch (IOException ex) {
-                Logger.getLogger(ConstructorFiles.class.getName()).log(Level.SEVERE, null, ex);
+                System.err.println("No files in the directory");
             }
         });
         return tb;
@@ -65,7 +71,7 @@ public class Manager {
                     }
                 });
             } catch (IOException ex) {
-                Logger.getLogger(ConstructorFiles.class.getName()).log(Level.SEVERE, null, ex);
+                System.err.println("No strategies active in this directory");
             }
         });
         return tb;
@@ -79,45 +85,21 @@ public class Manager {
                     .map(Path::toFile)
                     .collect(Collectors.toList());
         } catch (IOException ex) {
-            Logger.getLogger(ConstructorFiles.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("No files in the directory");
+            return filesInFolder;
         }
         return filesInFolder;
     }
-
-    public static Object[][] table;
 
     public static Object[][] getTable(String str) {
         table = toTableModel(str);
         return table;
     }
 
-    public static DefaultTableModel tm = new DefaultTableModelImpl(
-            Manager.getTable("\t"),
-            new String[]{
-                "Strategy", "Time", "Script", "Active", "Database"
-            });
-
     public static void filter(String str) {
         tm.setDataVector(Manager.getTable(str), new String[]{
             "Strategy", "Time", "Script", "Active", "Database"
         });
-    }
-
-    public static void openWebpage(URI uri) {
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-            try {
-                desktop.browse(uri);
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    public static void openWebpage(URL url) {
-        try {
-            openWebpage(url.toURI());
-        } catch (URISyntaxException e) {
-        }
     }
 
     public static String contentFile(String nameFile) {
@@ -129,30 +111,32 @@ public class Manager {
                 str.append(s).append("\n");
             });
         } catch (IOException ex) {
+            System.err.println("No files in the directory");
+            return str.toString();
         }
         return str.toString();
     }
 
-    /*Main*/
-    public static void main(String args[]) {
-        Loading l = new Loading();
-        l.setVisible(true);
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    public static void openWebpage(URI uri) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+            } catch (Exception e) {
+                System.err.println("URI Malformed");
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrontEnd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        java.awt.EventQueue.invokeLater(() -> {
-            new FrontEnd(l).setVisible(true);
-        });
     }
 
-    /*Inner classes*/
+    public static void openWebpage(URL url) {
+        try {
+            openWebpage(url.toURI());
+        } catch (URISyntaxException e) {
+            System.err.println("URL Malformed");
+        }
+    }
+
+    /*Inner class for the table*/
     private static class DefaultTableModelImpl extends DefaultTableModel {
 
         public DefaultTableModelImpl(Object[][] data, Object[] columnNames) {
